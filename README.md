@@ -1,1 +1,1 @@
-# For Spring-minimum-version
+# Spring-minimum-version
