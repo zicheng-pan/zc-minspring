@@ -1,59 +1,35 @@
 package com.minispring;
 
+import com.minispring.beans.BeanDefinition;
+import com.minispring.beans.BeanFactory;
+import com.minispring.beans.SimpleBeanFactory;
+import com.minispring.beans.XmlBeanDefinitionReader;
+import com.minispring.exception.BeansException;
 import com.minispring.resource.ClassPathXmlResource;
 import com.minispring.resource.Resource;
-import org.dom4j.Element;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+public class ClassPathXmlApplicationContext implements BeanFactory {
 
-public class ClassPathXmlApplicationContext {
+    BeanFactory beanFactory;
 
-    private List<BeanDefinition> beanDefinitions = new ArrayList<>();
-
-    private Map<String, Object> singletons = new HashMap<>();
-
-
-    public ClassPathXmlApplicationContext(String xmlFilename) {
-        readXML(xmlFilename);
-        instanceBeans();
+    public ClassPathXmlApplicationContext(String fileName) {
+        Resource resource = new ClassPathXmlResource(fileName);
+        this.beanFactory = new SimpleBeanFactory();
+        XmlBeanDefinitionReader beanDefinitionReader = new XmlBeanDefinitionReader(this.beanFactory);
+        beanDefinitionReader.loadBeanDefinitions(resource);
     }
 
-    /**
-     * init Spring Bean definition by Constructor
-     *
-     * @param xmlFilename xml file in resouces path
-     */
-    private void readXML(String xmlFilename) {
-        Resource xmlResource = new ClassPathXmlResource(xmlFilename);
-        while (xmlResource.hasNext()) {
-            Element element = (Element) xmlResource.next();
-            String beanID = element.attributeValue("id");
-            String beanClassName = element.attributeValue("class");
-            BeanDefinition beanDefinition = new BeanDefinition(beanID, beanClassName);
-            this.beanDefinitions.add(beanDefinition);
-        }
-    }
-
-    /**
-     * init object form beanDefinition list and store in singletonMap
-     */
-    private void instanceBeans() {
-        for (BeanDefinition beanDefinition : this.beanDefinitions) {
-            try {
-                //  clazz.getDeclaredConstructor().newInstance()
-                singletons.put(beanDefinition.getId(), Class.forName(beanDefinition.getClassName()).getDeclaredConstructor().newInstance());
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
-        }
-    }
-
+    @Override
     public Object getBean(String beanName) {
-        return singletons.getOrDefault(beanName, null);
+        try {
+            return this.beanFactory.getBean(beanName);
+        } catch (BeansException e) {
+            throw new RuntimeException(e);
+        }
     }
 
-
+    @Override
+    public void registerBeanDefinition(BeanDefinition beanDefinition) {
+        this.beanFactory.registerBeanDefinition(beanDefinition);
+    }
 }
