@@ -1,10 +1,9 @@
 package com.minispring;
 
-import org.dom4j.Document;
+import com.minispring.resource.ClassPathXmlResource;
+import com.minispring.resource.Resource;
 import org.dom4j.Element;
-import org.dom4j.io.SAXReader;
 
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -28,19 +27,13 @@ public class ClassPathXmlApplicationContext {
      * @param xmlFilename xml file in resouces path
      */
     private void readXML(String xmlFilename) {
-        SAXReader reader = new SAXReader();
-        try {
-            URL xmlPath = this.getClass().getClassLoader().getResource(xmlFilename);
-            Document document = reader.read(xmlPath);
-            Element rootElement = document.getRootElement();
-            for (Element element : rootElement.elements()) {
-                String beanId = element.attributeValue("id");
-                String beanClassName = element.attributeValue("class");
-                BeanDefinition beanDefinition = new BeanDefinition(beanId, beanClassName);
-                beanDefinitions.add(beanDefinition);
-            }
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+        Resource xmlResource = new ClassPathXmlResource(xmlFilename);
+        while (xmlResource.hasNext()) {
+            Element element = (Element) xmlResource.next();
+            String beanID = element.attributeValue("id");
+            String beanClassName = element.attributeValue("class");
+            BeanDefinition beanDefinition = new BeanDefinition(beanID, beanClassName);
+            this.beanDefinitions.add(beanDefinition);
         }
     }
 
