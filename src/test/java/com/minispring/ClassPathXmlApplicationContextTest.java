@@ -1,9 +1,6 @@
 package com.minispring;
 
-import com.minispring.testbean.TestObj;
-import com.minispring.testbean.TestObjImplForBeanReference;
-import com.minispring.testbean.TestObjImplForConstructor;
-import com.minispring.testbean.TestObjImplForProperty;
+import com.minispring.testbean.*;
 import org.junit.Test;
 
 public class ClassPathXmlApplicationContextTest {
@@ -32,7 +29,7 @@ public class ClassPathXmlApplicationContextTest {
     @Test
     public void testbeanReference() {
         ClassPathXmlApplicationContext classPathXmlApplicationContext = new ClassPathXmlApplicationContext("beans.xml");
-        TestObjImplForBeanReference testobj = (TestObjImplForBeanReference) classPathXmlApplicationContext.getBean("testobj_set_by_beanReference");
-        testobj.getTestObjImplForProperty().say();
+        ReferenceAClass testobj = (ReferenceAClass) classPathXmlApplicationContext.getBean("aclass");
+        System.out.println(testobj.getId() + " " + testobj.getReferenceBClass().getId() + " " + testobj.getReferenceBClass().getReferenceCClass().getId() + " ");
     }
 }

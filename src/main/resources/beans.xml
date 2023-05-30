@@ -15,7 +15,17 @@
     </bean>
 
     <bean id="testobj_set_by_beanReference" class="com.minispring.testbean.TestObjImplForBeanReference">
-        <property type="com.minispring.testbean.TestObjImplForProperty" name="testObjImplForProperty" ref="testobj_set_by_property"/>
+        <property type="com.minispring.testbean.TestObjImplForProperty" name="testObjImplForProperty"
+                  ref="testobj_set_by_property"/>
     </bean>
 
+    <bean id="aclass" class="com.minispring.testbean.ReferenceAClass">
+        <property type="com.minispring.testbean.ReferenceBClass" name="referenceBClass" ref="bclass"/>
+    </bean>
+    <bean id="bclass" class="com.minispring.testbean.ReferenceBClass">
+        <property type="com.minispring.testbean.ReferenceCClass" name="referenceCClass" ref="cclass"/>
+    </bean>
+    <bean id="cclass" class="com.minispring.testbean.ReferenceCClass">
+        <property type="com.minispring.testbean.ReferenceAClass" name="referenceAClass" ref="aclass"/>
+    </bean>
 </beans>
