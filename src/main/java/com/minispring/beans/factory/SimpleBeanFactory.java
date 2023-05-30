@@ -99,29 +99,35 @@ public class SimpleBeanFactory extends DefaultSingletonBeanRegistry implements B
             PropertyValues propertyValues = beanDefinition.getPropertyValues();
             if (!propertyValues.isEmpty()) {
                 for (int i = 0; i < propertyValues.size(); i++) {
-                    //对每一个属性，分数据类型分别处理
-                    PropertyValue propertyValue =
-                            propertyValues.getPropertyValueList().get(i);
-                    String pType = propertyValue.getType();
-                    String pName = propertyValue.getName();
-                    Object pValue = propertyValue.getValue();
-                    Class<?>[] paramTypes = new Class<?>[1];
-                    if ("String".equals(pType) || "java.lang.String".equals(pType)) {
-                        paramTypes[0] = String.class;
-                    } else if ("Integer".equals(pType) ||
-                            "java.lang.Integer".equals(pType)) {
-                        paramTypes[0] = Integer.class;
-                    } else if ("int".equals(pType)) {
-                        paramTypes[0] = int.class;
-                    } else { // 默认为string
-                        paramTypes[0] = String.class;
-                    }
+
                     Object[] paramValues = new Object[1];
-                    paramValues[0] = pValue;
+                    //对每一个属性，分数据类型分别处理
+                    PropertyValue property =
+                            propertyValues.getPropertyValueList().get(i);
+                    String type = property.getType();
+                    String name = property.getName();
+                    Object value = property.getValue();
+                    Class<?>[] paramTypes = new Class<?>[1];
+                    if (!property.isRef()) {
+                        if ("String".equals(type) || "java.lang.String".equals(type)) {
+                            paramTypes[0] = String.class;
+                        } else if ("Integer".equals(type) ||
+                                "java.lang.Integer".equals(type)) {
+                            paramTypes[0] = Integer.class;
+                        } else if ("int".equals(type)) {
+                            paramTypes[0] = int.class;
+                        } else { // 默认为string
+                            paramTypes[0] = String.class;
+                        }
+                        paramValues[0] = value;
+                    } else {
+                        paramTypes[0] = Class.forName(type);
+                        paramValues[0] = getBean((String) value);
+                    }
 
                     //按照setXxxx规范查找setter方法，调用setter方法设置属性
-                    String methodName = "set" + pName.substring(0, 1).toUpperCase()
-                            + pName.substring(1);
+                    String methodName = "set" + name.substring(0, 1).toUpperCase()
+                            + name.substring(1);
                     Method method = null;
                     method = clz.getMethod(methodName, paramTypes);
                     method.invoke(obj, paramValues);

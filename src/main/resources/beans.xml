@@ -14,4 +14,8 @@
         <property type="String" name="property2" value="property2"/>
     </bean>
 
+    <bean id="testobj_set_by_beanReference" class="com.minispring.testbean.TestObjImplForBeanReference">
+        <property type="com.minispring.testbean.TestObjImplForProperty" name="testObjImplForProperty" ref="testobj_set_by_property"/>
+    </bean>
+
 </beans>
