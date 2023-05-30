@@ -1,4 +1,4 @@
-package com.minispring.beanregistry;
+package com.minispring.beans.registry;
 
 public interface SinglentonBeanRegistry {
 

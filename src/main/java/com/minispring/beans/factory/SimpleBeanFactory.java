@@ -1,6 +1,6 @@
-package com.minispring.beanfactory;
+package com.minispring.beans.factory;
 
-import com.minispring.beanregistry.DefaultSingletonBeanRegistry;
+import com.minispring.beans.registry.DefaultSingletonBeanRegistry;
 import com.minispring.exception.BeansException;
 
 import java.util.ArrayList;

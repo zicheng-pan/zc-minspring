@@ -1,4 +1,4 @@
-package com.minispring.beanproperty;
+package com.minispring.beans.property;
 
 public class PropertyValue {
 

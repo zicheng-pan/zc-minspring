@@ -1,14 +1,14 @@
 package com.minispring;
 
-import com.minispring.beanfactory.BeanDefinition;
-import com.minispring.beanfactory.BeanFactory;
-import com.minispring.beanfactory.SimpleBeanFactory;
-import com.minispring.beanfactory.XmlBeanDefinitionReader;
+import com.minispring.beans.factory.BeanDefinition;
+import com.minispring.beans.factory.BeanFactory;
+import com.minispring.beans.factory.SimpleBeanFactory;
+import com.minispring.resourceReader.XmlBeanDefinitionReader;
 import com.minispring.event.ApplicationEvent;
 import com.minispring.event.ApplicationEventPublisher;
 import com.minispring.exception.BeansException;
-import com.minispring.resource.ClassPathXmlResource;
-import com.minispring.resource.Resource;
+import com.minispring.beans.resource.ClassPathXmlResource;
+import com.minispring.beans.resource.Resource;
 
 public class ClassPathXmlApplicationContext implements BeanFactory, ApplicationEventPublisher {
 

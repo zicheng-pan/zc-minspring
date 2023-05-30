@@ -1,4 +1,4 @@
-package com.minispring.beanproperty;
+package com.minispring.beans.property;
 
 import java.util.*;
 

@@ -1,4 +1,4 @@
-package com.minispring.beanregistry;
+package com.minispring.beans.registry;
 
 import java.util.ArrayList;
 import java.util.List;

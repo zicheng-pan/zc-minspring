@@ -1,7 +1,7 @@
-package com.minispring.beanfactory;
+package com.minispring.beans.factory;
 
-import com.minispring.beanproperty.ArgumentValues;
-import com.minispring.beanproperty.PropertyValues;
+import com.minispring.beans.property.ArgumentValues;
+import com.minispring.beans.property.PropertyValues;
 
 public class BeanDefinition {
 

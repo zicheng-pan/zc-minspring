@@ -1,6 +1,8 @@
-package com.minispring.beanfactory;
+package com.minispring.resourceReader;
 
-import com.minispring.resource.Resource;
+import com.minispring.beans.factory.BeanDefinition;
+import com.minispring.beans.factory.BeanFactory;
+import com.minispring.beans.resource.Resource;
 import org.dom4j.Element;
 
 

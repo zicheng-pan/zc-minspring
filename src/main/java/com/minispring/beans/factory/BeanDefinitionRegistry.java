@@ -1,4 +1,4 @@
-package com.minispring.beanfactory;
+package com.minispring.beans.factory;
 
 public interface BeanDefinitionRegistry {
 
