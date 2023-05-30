@@ -4,11 +4,13 @@ import com.minispring.beanfactory.BeanDefinition;
 import com.minispring.beanfactory.BeanFactory;
 import com.minispring.beanfactory.SimpleBeanFactory;
 import com.minispring.beanfactory.XmlBeanDefinitionReader;
+import com.minispring.event.ApplicationEvent;
+import com.minispring.event.ApplicationEventPublisher;
 import com.minispring.exception.BeansException;
 import com.minispring.resource.ClassPathXmlResource;
 import com.minispring.resource.Resource;
 
-public class ClassPathXmlApplicationContext implements BeanFactory {
+public class ClassPathXmlApplicationContext implements BeanFactory, ApplicationEventPublisher {
 
     BeanFactory beanFactory;
 
@@ -41,5 +43,25 @@ public class ClassPathXmlApplicationContext implements BeanFactory {
     @Override
     public void registerBean(String beanName, Object obj) {
         this.beanFactory.registerBean(beanName, obj);
+    }
+
+    @Override
+    public Boolean isSingleton(String beanName) {
+        return false;
+    }
+
+    @Override
+    public Boolean isPrototype(String beanName) {
+        return false;
+    }
+
+    @Override
+    public Class<?> getType(String beanName) {
+        return null;
+    }
+
+    @Override
+    public void publishEvent(ApplicationEvent event) {
+
     }
 }
