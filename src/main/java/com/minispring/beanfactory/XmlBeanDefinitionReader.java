@@ -1,4 +1,4 @@
-package com.minispring.beans;
+package com.minispring.beanfactory;
 
 import com.minispring.resource.Resource;
 import org.dom4j.Element;

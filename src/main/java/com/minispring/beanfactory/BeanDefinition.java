@@ -1,4 +1,4 @@
-package com.minispring.beans;
+package com.minispring.beanfactory;
 
 public class BeanDefinition {
 

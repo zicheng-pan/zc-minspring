@@ -1,5 +1,6 @@
-package com.minispring.beans;
+package com.minispring.beanfactory;
 
+import com.minispring.beanregistry.DefaultSingletonBeanRegistry;
 import com.minispring.exception.BeansException;
 
 import java.util.ArrayList;
@@ -7,22 +8,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class SimpleBeanFactory implements BeanFactory {
+public class SimpleBeanFactory extends DefaultSingletonBeanRegistry implements BeanFactory {
 
 
     private List<BeanDefinition> beanDefinitions = new ArrayList<>();
 
-    /*
-        For index bean class if exists conveniently.
-     */
-    private List<String> beanNames = new ArrayList<>();
-    private Map<String, Object> singletons = new HashMap<>();
-
-
     @Override
     public Object getBean(String beanName) throws BeansException {
         // Get bean if exists.
-        Object singleton = singletons.getOrDefault(beanName, null);
+        Object singleton = this.getSinglenton(beanName);
         // If bean doesn't exist init it.
         if (singleton == null) {
             int index = beanNames.indexOf(beanName);
@@ -31,7 +25,7 @@ public class SimpleBeanFactory implements BeanFactory {
                 BeanDefinition beanDefinition = beanDefinitions.get(index);
                 try {
                     singleton = Class.forName(beanDefinition.getClassName()).getDeclaredConstructor().newInstance();
-                    singletons.put(beanDefinition.getId(), singleton);
+                    this.registerSinglenton(beanName, singleton);
                 } catch (Exception e) {
                     throw new RuntimeException(e);
                 }
@@ -46,5 +40,15 @@ public class SimpleBeanFactory implements BeanFactory {
     public void registerBeanDefinition(BeanDefinition beanDefinition) {
         this.beanDefinitions.add(beanDefinition);
         this.beanNames.add(beanDefinition.getId());
+    }
+
+    @Override
+    public Boolean containsBean(String beanName) {
+        return this.containsSingleton(beanName);
+    }
+
+    @Override
+    public void registerBean(String beanName, Object obj) {
+        this.registerSinglenton(beanName, obj);
     }
 }

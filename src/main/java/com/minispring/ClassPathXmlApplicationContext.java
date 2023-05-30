@@ -1,9 +1,9 @@
 package com.minispring;
 
-import com.minispring.beans.BeanDefinition;
-import com.minispring.beans.BeanFactory;
-import com.minispring.beans.SimpleBeanFactory;
-import com.minispring.beans.XmlBeanDefinitionReader;
+import com.minispring.beanfactory.BeanDefinition;
+import com.minispring.beanfactory.BeanFactory;
+import com.minispring.beanfactory.SimpleBeanFactory;
+import com.minispring.beanfactory.XmlBeanDefinitionReader;
 import com.minispring.exception.BeansException;
 import com.minispring.resource.ClassPathXmlResource;
 import com.minispring.resource.Resource;
@@ -31,5 +31,15 @@ public class ClassPathXmlApplicationContext implements BeanFactory {
     @Override
     public void registerBeanDefinition(BeanDefinition beanDefinition) {
         this.beanFactory.registerBeanDefinition(beanDefinition);
+    }
+
+    @Override
+    public Boolean containsBean(String beanName) {
+        return this.beanFactory.containsBean(beanName);
+    }
+
+    @Override
+    public void registerBean(String beanName, Object obj) {
+        this.beanFactory.registerBean(beanName, obj);
     }
 }
