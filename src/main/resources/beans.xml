@@ -6,12 +6,8 @@
         <property type="String" name="property1" value="Hello, World！"/>
     </bean>
 
-    <bean id="" class="com.minispring.testbean.TestObjImplForConstructor">
-        <constructor-arg type="String" name="name" value="test"/>
-        <constructor-arg type="int" name="age" value="10"/>
-    </bean>
 
-    <bean id="" class="com.minispring.testbean.TestObjImplForConstructor">
+    <bean id="testobj_set_by_constructor" class="com.minispring.testbean.TestObjImplForConstructor">
         <constructor-arg type="String" name="name" value="test"/>
         <constructor-arg type="int" name="age" value="10"/>
         <property type="String" name="property1" value="property1"/>

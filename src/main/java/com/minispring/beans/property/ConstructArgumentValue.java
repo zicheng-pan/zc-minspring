@@ -1,16 +1,16 @@
 package com.minispring.beans.property;
 
-public class ArgumentValue {
+public class ConstructArgumentValue {
     private Object value;
     private String type;
     private String name;
 
-    public ArgumentValue(Object value, String type) {
+    public ConstructArgumentValue(Object value, String type) {
         this.value = value;
         this.type = type;
     }
 
-    public ArgumentValue(Object value, String type, String name) {
+    public ConstructArgumentValue(Object value, String type, String name) {
         this(value, type);
         this.name = name;
     }

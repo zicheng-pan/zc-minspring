@@ -1,6 +1,6 @@
 package com.minispring.beans.factory;
 
-import com.minispring.beans.property.ArgumentValues;
+import com.minispring.beans.property.ConstructArgumentValues;
 import com.minispring.beans.property.PropertyValues;
 
 public class BeanDefinition {
@@ -12,7 +12,7 @@ public class BeanDefinition {
 
     private String[] dependsOn;
 
-    private ArgumentValues argumentValues;
+    private ConstructArgumentValues constructorConstructArgumentValues;
     private PropertyValues propertyValues;
     private String initMethodName;
     private volatile Object beanClass;
@@ -58,12 +58,12 @@ public class BeanDefinition {
         this.dependsOn = dependsOn;
     }
 
-    public ArgumentValues getArgumentValues() {
-        return argumentValues;
+    public ConstructArgumentValues getConstructorArgumentValues() {
+        return constructorConstructArgumentValues;
     }
 
-    public void setArgumentValues(ArgumentValues argumentValues) {
-        this.argumentValues = argumentValues;
+    public void setConstructorArgumentValues(ConstructArgumentValues constructArgumentValues) {
+        this.constructorConstructArgumentValues = constructArgumentValues;
     }
 
     public PropertyValues getPropertyValues() {

@@ -1,8 +1,14 @@
 package com.minispring.beans.factory;
 
+import com.minispring.beans.property.ConstructArgumentValue;
+import com.minispring.beans.property.ConstructArgumentValues;
+import com.minispring.beans.property.PropertyValue;
+import com.minispring.beans.property.PropertyValues;
 import com.minispring.beans.registry.DefaultSingletonBeanRegistry;
 import com.minispring.exception.BeansException;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -30,7 +36,7 @@ public class SimpleBeanFactory extends DefaultSingletonBeanRegistry implements B
                 // Init bean
                 BeanDefinition beanDefinition = beanDefinitionMap.get(beanName);
                 try {
-                    singleton = Class.forName(beanDefinition.getClassName()).getDeclaredConstructor().newInstance();
+                    singleton = createBean(beanDefinition);
                     this.registerSinglenton(beanName, singleton);
                 } catch (Exception e) {
                     throw new RuntimeException(e);
@@ -40,6 +46,91 @@ public class SimpleBeanFactory extends DefaultSingletonBeanRegistry implements B
             }
         }
         return singleton;
+    }
+
+    /**
+     * 根据beanDefinition来创建对象
+     *
+     * @param beanDefinition
+     * @return
+     */
+    private Object createBean(BeanDefinition beanDefinition) {
+
+        Class<?> clz = null;
+        Object obj = null;
+        Constructor<?> constructor = null;
+
+        try {
+            clz = Class.forName(beanDefinition.getClassName());
+            ConstructArgumentValues constructorConstructArgumentValues = beanDefinition.getConstructorArgumentValues();
+            // 如果xml配置文件中对这个beans，配置了构造参数
+            if (!constructorConstructArgumentValues.isEmpty()) {
+                Class<?>[] paramTypes = new Class[constructorConstructArgumentValues.getArgumentCount()];
+                List<Object> paramValues = new ArrayList<>();
+
+                for (int i = 0; i < constructorConstructArgumentValues.getArgumentCount(); i++) {
+                    ConstructArgumentValue indexedArgument = constructorConstructArgumentValues.getArgumentValueList().get(i);
+                    if ("String".equals(indexedArgument.getType()) || "java.lang.String".equals(indexedArgument.getType())) {
+                        paramTypes[i] = String.class;
+                        paramValues.add(String.valueOf(indexedArgument.getValue()));
+                    } else if ("Integer".equals(indexedArgument.getType()) || "java.lang.Integer".equals(indexedArgument.getType())) {
+                        paramTypes[i] = Integer.class;
+                        paramValues.add(Integer.valueOf(String.valueOf(indexedArgument.getValue())));
+                    } else if ("int".equals(indexedArgument.getType())) {
+                        paramTypes[i] = int.class;
+                        paramValues.add(Integer.valueOf(String.valueOf(indexedArgument.getValue())));
+                    } else {
+                        paramTypes[i] = String.class;
+                        paramValues.add(String.valueOf(indexedArgument.getValue()));
+                    }
+                }
+
+                // 按照指定构造器创建实例
+                constructor = clz.getDeclaredConstructor(paramTypes);
+                // 根据参数来创建对象
+                obj = constructor.newInstance(paramValues.toArray());
+            } else {
+                // 没有配置构造参数，通过默认构造器直接创建对象
+                obj = clz.getDeclaredConstructor().newInstance();
+            }
+
+
+            // 有了对象后，根据xml文件的Property配置，创建对象属性
+            PropertyValues propertyValues = beanDefinition.getPropertyValues();
+            if (!propertyValues.isEmpty()) {
+                for (int i = 0; i < propertyValues.size(); i++) {
+                    //对每一个属性，分数据类型分别处理
+                    PropertyValue propertyValue =
+                            propertyValues.getPropertyValueList().get(i);
+                    String pType = propertyValue.getType();
+                    String pName = propertyValue.getName();
+                    Object pValue = propertyValue.getValue();
+                    Class<?>[] paramTypes = new Class<?>[1];
+                    if ("String".equals(pType) || "java.lang.String".equals(pType)) {
+                        paramTypes[0] = String.class;
+                    } else if ("Integer".equals(pType) ||
+                            "java.lang.Integer".equals(pType)) {
+                        paramTypes[0] = Integer.class;
+                    } else if ("int".equals(pType)) {
+                        paramTypes[0] = int.class;
+                    } else { // 默认为string
+                        paramTypes[0] = String.class;
+                    }
+                    Object[] paramValues = new Object[1];
+                    paramValues[0] = pValue;
+
+                    //按照setXxxx规范查找setter方法，调用setter方法设置属性
+                    String methodName = "set" + pName.substring(0, 1).toUpperCase()
+                            + pName.substring(1);
+                    Method method = null;
+                    method = clz.getMethod(methodName, paramTypes);
+                    method.invoke(obj, paramValues);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return obj;
     }
 
     @Override
