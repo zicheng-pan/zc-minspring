@@ -1,4 +1,4 @@
-package com.minispring.beans.registry;
+package com.minispring.beans.factory.config;
 
 public interface SinglentonBeanRegistry {
 

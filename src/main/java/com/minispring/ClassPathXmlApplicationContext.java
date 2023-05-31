@@ -1,9 +1,9 @@
 package com.minispring;
 
-import com.minispring.beans.factory.BeanDefinition;
+import com.minispring.beans.factory.config.BeanDefinition;
 import com.minispring.beans.factory.BeanFactory;
-import com.minispring.beans.factory.SimpleBeanFactory;
-import com.minispring.beans.factory.XmlBeanDefinitionReader;
+import com.minispring.beans.factory.support.SimpleBeanFactory;
+import com.minispring.beans.factory.xml.XmlBeanDefinitionReader;
 import com.minispring.event.ApplicationEvent;
 import com.minispring.event.ApplicationEventPublisher;
 import com.minispring.exception.BeansException;

@@ -1,10 +1,11 @@
-package com.minispring.beans.factory;
+package com.minispring.beans.factory.support;
 
-import com.minispring.beans.property.ConstructArgumentValue;
-import com.minispring.beans.property.ConstructArgumentValues;
-import com.minispring.beans.property.PropertyValue;
-import com.minispring.beans.property.PropertyValues;
-import com.minispring.beans.registry.DefaultSingletonBeanRegistry;
+import com.minispring.beans.factory.BeanFactory;
+import com.minispring.beans.factory.config.BeanDefinition;
+import com.minispring.beans.factory.config.property.ConstructArgumentValue;
+import com.minispring.beans.factory.config.property.ConstructArgumentValues;
+import com.minispring.beans.factory.config.property.PropertyValue;
+import com.minispring.beans.factory.config.property.PropertyValues;
 import com.minispring.exception.BeansException;
 
 import java.lang.reflect.Constructor;

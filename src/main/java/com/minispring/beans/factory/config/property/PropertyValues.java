@@ -1,4 +1,4 @@
-package com.minispring.beans.property;
+package com.minispring.beans.factory.config.property;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,4 +1,6 @@
-package com.minispring.beans.registry;
+package com.minispring.beans.factory.support;
+
+import com.minispring.beans.factory.config.SinglentonBeanRegistry;
 
 import java.util.ArrayList;
 import java.util.List;

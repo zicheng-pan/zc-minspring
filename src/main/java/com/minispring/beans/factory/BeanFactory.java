@@ -1,5 +1,6 @@
 package com.minispring.beans.factory;
 
+import com.minispring.beans.factory.config.BeanDefinition;
 import com.minispring.exception.BeansException;
 
 public interface BeanFactory {
