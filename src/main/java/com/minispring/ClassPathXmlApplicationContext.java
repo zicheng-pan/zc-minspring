@@ -1,14 +1,15 @@
 package com.minispring;
 
-import com.minispring.beans.factory.config.BeanDefinition;
+import com.minispring.beans.factory.AutowiredAnnotationBeanPostProcessor;
+import com.minispring.beans.factory.AutowireCapableBeanFactory;
 import com.minispring.beans.factory.BeanFactory;
-import com.minispring.beans.factory.support.SimpleBeanFactory;
+import com.minispring.beans.factory.config.BeanDefinition;
 import com.minispring.beans.factory.xml.XmlBeanDefinitionReader;
+import com.minispring.beans.resource.ClassPathXmlResource;
+import com.minispring.beans.resource.Resource;
 import com.minispring.event.ApplicationEvent;
 import com.minispring.event.ApplicationEventPublisher;
 import com.minispring.exception.BeansException;
-import com.minispring.beans.resource.ClassPathXmlResource;
-import com.minispring.beans.resource.Resource;
 
 public class ClassPathXmlApplicationContext implements BeanFactory, ApplicationEventPublisher {
 
@@ -16,12 +17,26 @@ public class ClassPathXmlApplicationContext implements BeanFactory, ApplicationE
 
     public ClassPathXmlApplicationContext(String fileName, boolean isRefresh) {
         Resource resource = new ClassPathXmlResource(fileName);
-        this.beanFactory = new SimpleBeanFactory();
+        /*
+            这个是使用xml来构建bean对象
+            this.beanFactory = new SimpleBeanFactory();
+         */
+
+        /*
+            这个AutowiredCapableBeanFactory类可以添加自定义processor,并且自定义processor可以实现@Autowired注解的注入
+         */
+        this.beanFactory = new AutowireCapableBeanFactory();
+
+
         XmlBeanDefinitionReader beanDefinitionReader = new XmlBeanDefinitionReader(this.beanFactory);
         beanDefinitionReader.loadBeanDefinitions(resource);
         if (isRefresh) {
             try {
-                ((SimpleBeanFactory) this.beanFactory).refresh();
+                /*
+                    这里refresh方法中添加了自己的AutowiredAnnotationBeanPostProcessor类，用来Autowire注解的解析
+                    然后在注册进去
+                 */
+                this.refresh();
             } catch (BeansException e) {
                 throw new RuntimeException(e);
             }
@@ -68,7 +83,23 @@ public class ClassPathXmlApplicationContext implements BeanFactory, ApplicationE
     }
 
     @Override
+    public void refresh() throws BeansException {
+        registerBeanPostProcessors((AutowireCapableBeanFactory) this.beanFactory);
+        onRefresh();
+    }
+
+    public void onRefresh() throws BeansException {
+        this.beanFactory.refresh();
+    }
+
+    private void registerBeanPostProcessors(AutowireCapableBeanFactory beanFactory) {
+        beanFactory.addBeanPostProcessor(new AutowiredAnnotationBeanPostProcessor((AutowireCapableBeanFactory) this.beanFactory));
+    }
+
+    @Override
     public void publishEvent(ApplicationEvent event) {
 
     }
+
+
 }

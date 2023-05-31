@@ -1,11 +1,12 @@
-package com.minispring.beans.factory.support;
+package com.minispring.beans.factory;
 
-import com.minispring.beans.factory.BeanFactory;
 import com.minispring.beans.factory.config.BeanDefinition;
 import com.minispring.beans.factory.config.property.ConstructArgumentValue;
 import com.minispring.beans.factory.config.property.ConstructArgumentValues;
 import com.minispring.beans.factory.config.property.PropertyValue;
 import com.minispring.beans.factory.config.property.PropertyValues;
+import com.minispring.beans.factory.support.BeanDefinitionRegistry;
+import com.minispring.beans.factory.support.DefaultSingletonBeanRegistry;
 import com.minispring.exception.BeansException;
 
 import java.lang.reflect.Constructor;
@@ -15,16 +16,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class SimpleBeanFactory extends DefaultSingletonBeanRegistry implements BeanFactory, BeanDefinitionRegistry {
-
+public abstract class AbstractBeanFactory extends DefaultSingletonBeanRegistry implements BeanFactory, BeanDefinitionRegistry {
     private Map<String, BeanDefinition> beanDefinitionMap = new ConcurrentHashMap<>();
     private List<String> beanDefinitionNames = new ArrayList<>();
+    private final Map<String, Object> earlySingletonObjects = new ConcurrentHashMap<>();
 
-    /**
-     * @param beanName 对应 beanDefinition 对应 具体的bean object
-     * @return
-     * @throws BeansException
-     */
+    public AbstractBeanFactory() {
+
+    }
+
     @Override
     public Object getBean(String beanName) throws BeansException {
         // Get bean if exists.
@@ -41,7 +41,16 @@ public class SimpleBeanFactory extends DefaultSingletonBeanRegistry implements B
                     BeanDefinition beanDefinition = beanDefinitionMap.get(beanName);
                     try {
                         singleton = createBean(beanDefinition);
-                        this.registerSinglenton(beanName, singleton);
+                        this.registerBean(beanName, singleton);
+                        // 进行bean postbeforeprocessor处理
+                        applyBeanPostProcessorBeforeInitialization(singleton, beanName);
+                        // 执行类自定义的init方法
+                        if (beanDefinition.getInitMethodName() != null &&
+                                !beanDefinition.equals("")) {
+                            invokeInitMethod(beanDefinition, singleton);
+                        }
+                        // 执行bean自定义的bean afterprocessor方法
+                        applyBeanPostProcessorAfterInitialization(singleton, beanName);
                     } catch (Exception e) {
                         throw new RuntimeException(e);
                     }
@@ -77,14 +86,14 @@ public class SimpleBeanFactory extends DefaultSingletonBeanRegistry implements B
         Constructor<?> constructor = null;
 
         clz = Class.forName(beanDefinition.getClassName());
-        ConstructArgumentValues constructorArgumentValues = beanDefinition.getConstructorArgumentValues();
+        ConstructArgumentValues constructorConstructArgumentValues = beanDefinition.getConstructorArgumentValues();
         // 如果xml配置文件中对这个beans，配置了构造参数
-        if (!constructorArgumentValues.isEmpty()) {
-            Class<?>[] paramTypes = new Class[constructorArgumentValues.getArgumentCount()];
+        if (!constructorConstructArgumentValues.isEmpty()) {
+            Class<?>[] paramTypes = new Class[constructorConstructArgumentValues.getArgumentCount()];
             List<Object> paramValues = new ArrayList<>();
 
-            for (int i = 0; i < constructorArgumentValues.getArgumentCount(); i++) {
-                ConstructArgumentValue indexedArgument = constructorArgumentValues.getArgumentValueList().get(i);
+            for (int i = 0; i < constructorConstructArgumentValues.getArgumentCount(); i++) {
+                ConstructArgumentValue indexedArgument = constructorConstructArgumentValues.getArgumentValueList().get(i);
                 if ("String".equals(indexedArgument.getType()) || "java.lang.String".equals(indexedArgument.getType())) {
                     paramTypes[i] = String.class;
                     paramValues.add(String.valueOf(indexedArgument.getValue()));
@@ -226,4 +235,20 @@ public class SimpleBeanFactory extends DefaultSingletonBeanRegistry implements B
             getBean(beanName);
         }
     }
+
+
+    private void invokeInitMethod(BeanDefinition beanDefinition, Object obj) {
+        Class<?> clz = beanDefinition.getClass();
+        Method method = null;
+        try {
+            method = clz.getMethod(beanDefinition.getInitMethodName());
+            method.invoke(obj);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    abstract public Object applyBeanPostProcessorBeforeInitialization(Object existingBean, String beanName) throws BeansException;
+
+    abstract public Object applyBeanPostProcessorAfterInitialization(Object existingBean, String beanName) throws BeansException;
 }

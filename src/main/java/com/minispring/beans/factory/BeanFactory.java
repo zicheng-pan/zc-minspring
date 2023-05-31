@@ -19,4 +19,6 @@ public interface BeanFactory {
 
     Class<?> getType(String beanName);
 
+    void refresh() throws BeansException;
+
 }

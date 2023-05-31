@@ -12,7 +12,7 @@ public class BeanDefinition {
 
     private String[] dependsOn;
 
-    private ConstructArgumentValues constructorConstructArgumentValues;
+    private ConstructArgumentValues constructArgumentValues;
     private PropertyValues propertyValues;
     private String initMethodName;
     private volatile Object beanClass;
@@ -59,11 +59,11 @@ public class BeanDefinition {
     }
 
     public ConstructArgumentValues getConstructorArgumentValues() {
-        return constructorConstructArgumentValues;
+        return constructArgumentValues;
     }
 
     public void setConstructorArgumentValues(ConstructArgumentValues constructArgumentValues) {
-        this.constructorConstructArgumentValues = constructArgumentValues;
+        this.constructArgumentValues = constructArgumentValues;
     }
 
     public PropertyValues getPropertyValues() {

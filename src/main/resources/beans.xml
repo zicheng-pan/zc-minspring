@@ -28,4 +28,6 @@
     <bean id="cclass" class="com.minispring.testbean.ReferenceCClass">
         <property type="com.minispring.testbean.ReferenceAClass" name="referenceAClass" ref="aclass"/>
     </bean>
+
+    <bean id="testautowirebean" class="com.minispring.testbean.AutowireTestBean"/>
 </beans>

@@ -32,4 +32,12 @@ public class ClassPathXmlApplicationContextTest {
         ReferenceAClass testobj = (ReferenceAClass) classPathXmlApplicationContext.getBean("aclass");
         System.out.println(testobj.getId() + " " + testobj.getReferenceBClass().getId() + " " + testobj.getReferenceBClass().getReferenceCClass().getId() + " ");
     }
+
+
+    @Test
+    public void testbeanAutowire() {
+        ClassPathXmlApplicationContext classPathXmlApplicationContext = new ClassPathXmlApplicationContext("beans.xml", true);
+        AutowireTestBean test = (AutowireTestBean) classPathXmlApplicationContext.getBean("testautowirebean");
+        test.say();
+    }
 }
