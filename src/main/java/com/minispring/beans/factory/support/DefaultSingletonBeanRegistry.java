@@ -13,7 +13,6 @@ public class DefaultSingletonBeanRegistry implements SinglentonBeanRegistry {
 
     protected final Map<String, Object> singletonBeans = new ConcurrentHashMap<>();
 
-    protected final Map<String, Object> earlySingletonObjects = new ConcurrentHashMap<>();
 
     @Override
 

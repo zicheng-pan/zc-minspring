@@ -1,4 +1,4 @@
-package com.minispring.beans.factory;
+package com.minispring.beans.factory.annotation;
 
 
 import java.lang.annotation.ElementType;

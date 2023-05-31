@@ -1,5 +1,7 @@
-package com.minispring.beans.factory;
+package com.minispring.beans.factory.annotation;
 
+import com.minispring.beans.factory.AbstractBeanFactory;
+import com.minispring.beans.factory.BeanPostProcessor;
 import com.minispring.exception.BeansException;
 
 import java.util.ArrayList;

@@ -20,6 +20,8 @@ public class SimpleBeanFactory extends DefaultSingletonBeanRegistry implements B
     private Map<String, BeanDefinition> beanDefinitionMap = new ConcurrentHashMap<>();
     private List<String> beanDefinitionNames = new ArrayList<>();
 
+    protected final Map<String, Object> earlySingletonObjects = new ConcurrentHashMap<>();
+
     /**
      * @param beanName 对应 beanDefinition 对应 具体的bean object
      * @return

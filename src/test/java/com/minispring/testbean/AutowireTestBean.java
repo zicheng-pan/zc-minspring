@@ -1,6 +1,6 @@
 package com.minispring.testbean;
 
-import com.minispring.beans.factory.Autowired;
+import com.minispring.beans.factory.annotation.Autowired;
 
 public class AutowireTestBean {
 
