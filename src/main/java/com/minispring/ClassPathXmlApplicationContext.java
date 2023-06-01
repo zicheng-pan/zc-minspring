@@ -1,8 +1,8 @@
 package com.minispring;
 
-import com.minispring.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor;
-import com.minispring.beans.factory.annotation.AutowireCapableBeanFactory;
-import com.minispring.beans.factory.BeanFactory;
+import com.minispring.beans.factory.support.AutowiredAnnotationBeanPostProcessor;
+import com.minispring.beans.factory.support.AbstractAutowireCapableBeanFactory;
+import com.minispring.beans.factory.interfaces.BeanFactory;
 import com.minispring.beans.factory.config.BeanDefinition;
 import com.minispring.beans.factory.xml.XmlBeanDefinitionReader;
 import com.minispring.beans.resource.ClassPathXmlResource;
@@ -25,7 +25,7 @@ public class ClassPathXmlApplicationContext implements BeanFactory, ApplicationE
         /*
             这个AutowiredCapableBeanFactory类可以添加自定义processor,并且自定义processor可以实现@Autowired注解的注入
          */
-        this.beanFactory = new AutowireCapableBeanFactory();
+        this.beanFactory = new AbstractAutowireCapableBeanFactory();
 
 
         XmlBeanDefinitionReader beanDefinitionReader = new XmlBeanDefinitionReader(this.beanFactory);
@@ -84,7 +84,7 @@ public class ClassPathXmlApplicationContext implements BeanFactory, ApplicationE
 
     @Override
     public void refresh() throws BeansException {
-        registerBeanPostProcessors((AutowireCapableBeanFactory) this.beanFactory);
+        registerBeanPostProcessors((AbstractAutowireCapableBeanFactory) this.beanFactory);
         onRefresh();
     }
 
@@ -92,8 +92,8 @@ public class ClassPathXmlApplicationContext implements BeanFactory, ApplicationE
         this.beanFactory.refresh();
     }
 
-    private void registerBeanPostProcessors(AutowireCapableBeanFactory beanFactory) {
-        beanFactory.addBeanPostProcessor(new AutowiredAnnotationBeanPostProcessor((AutowireCapableBeanFactory) this.beanFactory));
+    private void registerBeanPostProcessors(AbstractAutowireCapableBeanFactory beanFactory) {
+        beanFactory.addBeanPostProcessor(new AutowiredAnnotationBeanPostProcessor((AbstractAutowireCapableBeanFactory) this.beanFactory));
     }
 
     @Override

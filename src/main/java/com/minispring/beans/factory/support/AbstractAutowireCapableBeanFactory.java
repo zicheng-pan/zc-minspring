@@ -1,13 +1,12 @@
-package com.minispring.beans.factory.annotation;
+package com.minispring.beans.factory.support;
 
-import com.minispring.beans.factory.AbstractBeanFactory;
-import com.minispring.beans.factory.BeanPostProcessor;
+import com.minispring.beans.factory.interfaces.BeanPostProcessor;
 import com.minispring.exception.BeansException;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class AutowireCapableBeanFactory extends AbstractBeanFactory {
+public class AbstractAutowireCapableBeanFactory extends AbstractBeanFactory {
 
     /**
      * 这里用来保存用户注册的自定义bean processor，类似于解析我们自定义注解，就是一个bean post processor @AutowiredAnnotationBeanPostProcessor
@@ -29,7 +28,7 @@ public class AutowireCapableBeanFactory extends AbstractBeanFactory {
     }
 
     @Override
-    public Object applyBeanPostProcessorBeforeInitialization(Object existingBean, String beanName) throws BeansException {
+    public Object applyBeanPostProcessorsBeforeInitialization(Object existingBean, String beanName) throws BeansException {
         Object result = existingBean;
         for (BeanPostProcessor beanPostProcessor : beanPostProcessors) {
             if (beanPostProcessor instanceof AutowiredAnnotationBeanPostProcessor) {
@@ -44,7 +43,7 @@ public class AutowireCapableBeanFactory extends AbstractBeanFactory {
     }
 
     @Override
-    public Object applyBeanPostProcessorAfterInitialization(Object existingBean, String beanName) throws BeansException {
+    public Object applyBeanPostProcessorsAfterInitialization(Object existingBean, String beanName) throws BeansException {
         Object result = existingBean;
         for (BeanPostProcessor beanPostProcessor : beanPostProcessors) {
             if (beanPostProcessor instanceof AutowiredAnnotationBeanPostProcessor) {

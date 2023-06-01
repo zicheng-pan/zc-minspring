@@ -1,12 +1,13 @@
-package com.minispring.beans.factory;
+package com.minispring.beans.factory.support;
 
 import com.minispring.beans.factory.config.BeanDefinition;
 import com.minispring.beans.factory.config.property.ConstructArgumentValue;
 import com.minispring.beans.factory.config.property.ConstructArgumentValues;
 import com.minispring.beans.factory.config.property.PropertyValue;
 import com.minispring.beans.factory.config.property.PropertyValues;
-import com.minispring.beans.factory.support.BeanDefinitionRegistry;
-import com.minispring.beans.factory.support.DefaultSingletonBeanRegistry;
+import com.minispring.beans.factory.interfaces.AutowireCapableBeanFactory;
+import com.minispring.beans.factory.interfaces.BeanDefinitionRegistry;
+import com.minispring.beans.factory.interfaces.BeanFactory;
 import com.minispring.exception.BeansException;
 
 import java.lang.reflect.Constructor;
@@ -16,7 +17,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-public abstract class AbstractBeanFactory extends DefaultSingletonBeanRegistry implements BeanFactory, BeanDefinitionRegistry {
+public abstract class AbstractBeanFactory extends DefaultSingletonBeanRegistry implements BeanFactory, BeanDefinitionRegistry, AutowireCapableBeanFactory {
     private Map<String, BeanDefinition> beanDefinitionMap = new ConcurrentHashMap<>();
     private List<String> beanDefinitionNames = new ArrayList<>();
     private final Map<String, Object> earlySingletonObjects = new ConcurrentHashMap<>();
@@ -43,14 +44,14 @@ public abstract class AbstractBeanFactory extends DefaultSingletonBeanRegistry i
                         singleton = createBean(beanDefinition);
                         this.registerBean(beanName, singleton);
                         // 进行bean postbeforeprocessor处理
-                        applyBeanPostProcessorBeforeInitialization(singleton, beanName);
+                        applyBeanPostProcessorsBeforeInitialization(singleton, beanName);
                         // 执行类自定义的init方法
                         if (beanDefinition.getInitMethodName() != null &&
                                 !beanDefinition.equals("")) {
                             invokeInitMethod(beanDefinition, singleton);
                         }
                         // 执行bean自定义的bean afterprocessor方法
-                        applyBeanPostProcessorAfterInitialization(singleton, beanName);
+                        applyBeanPostProcessorsAfterInitialization(singleton, beanName);
                     } catch (Exception e) {
                         throw new RuntimeException(e);
                     }
@@ -248,7 +249,4 @@ public abstract class AbstractBeanFactory extends DefaultSingletonBeanRegistry i
         }
     }
 
-    abstract public Object applyBeanPostProcessorBeforeInitialization(Object existingBean, String beanName) throws BeansException;
-
-    abstract public Object applyBeanPostProcessorAfterInitialization(Object existingBean, String beanName) throws BeansException;
 }

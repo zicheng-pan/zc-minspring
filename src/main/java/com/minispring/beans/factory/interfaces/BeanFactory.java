@@ -1,4 +1,4 @@
-package com.minispring.beans.factory;
+package com.minispring.beans.factory.interfaces;
 
 import com.minispring.beans.factory.config.BeanDefinition;
 import com.minispring.exception.BeansException;
