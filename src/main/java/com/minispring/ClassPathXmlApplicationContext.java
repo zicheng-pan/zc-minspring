@@ -11,15 +11,10 @@ import com.minispring.beans.resource.Resource;
 import com.minispring.event.*;
 import com.minispring.exception.BeansException;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class ClassPathXmlApplicationContext extends AbstractApplicationContext {
 
 
     DefaultListableBeanFactory beanFactory;
-
-    private final List<BeanFactoryPostProcessor> beanFactoryPostProcessors = new ArrayList<>();
 
     public ClassPathXmlApplicationContext(String fileName) {
         this(fileName, true);
@@ -99,7 +94,7 @@ public class ClassPathXmlApplicationContext extends AbstractApplicationContext {
     }
 
     public void addBeanFactoryPostProcessor(BeanFactoryPostProcessor postProcessor) {
-        this.beanFactoryPostProcessors.add(postProcessor);
+        this.beanFactory.addBeanPostProcessor(postProcessor);
     }
 
 }

@@ -66,7 +66,7 @@ public abstract class AbstractApplicationContext implements ApplicationContext {
 
 
     /**
-     * 主要是这里
+     * 主要是这里注册所有需要的执行的PostProcessor和Listener事件的对象
      *
      * @throws BeansException
      * @throws IllegalStateException
