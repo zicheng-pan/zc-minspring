@@ -1,6 +1,6 @@
 package com.minispring.testbean;
 
-public class ReferenceCClass {
+public class ReferenceCClass implements TestReference {
 
     private String id = "C";
 
