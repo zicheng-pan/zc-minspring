@@ -15,7 +15,7 @@ public class BeanDefinition {
     private ConstructArgumentValues constructArgumentValues;
     private PropertyValues propertyValues;
     private String initMethodName;
-    private volatile Object beanClass;
+    private volatile Class<?> beanClass;
     private String id;
 
     private String className;
@@ -24,6 +24,11 @@ public class BeanDefinition {
     public BeanDefinition(String id, String className) {
         this.id = id;
         this.className = className;
+        try {
+            this.setBeanClass(Class.forName(className));
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public String getId() {
@@ -82,11 +87,11 @@ public class BeanDefinition {
         this.initMethodName = initMethodName;
     }
 
-    public Object getBeanClass() {
+    public Class<?> getBeanClass() {
         return beanClass;
     }
 
-    public void setBeanClass(Object beanClass) {
+    public void setBeanClass(Class<?> beanClass) {
         this.beanClass = beanClass;
     }
 

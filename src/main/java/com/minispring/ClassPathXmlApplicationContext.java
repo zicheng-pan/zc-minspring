@@ -1,5 +1,6 @@
 package com.minispring;
 
+import com.minispring.beans.DefaultListableBeanFactory;
 import com.minispring.beans.factory.support.AutowiredAnnotationBeanPostProcessor;
 import com.minispring.beans.factory.support.AbstractAutowireCapableBeanFactory;
 import com.minispring.beans.factory.config.BeanFactory;
@@ -25,7 +26,7 @@ public class ClassPathXmlApplicationContext implements BeanFactory, ApplicationE
         /*
             这个AutowiredCapableBeanFactory类可以添加自定义processor,并且自定义processor可以实现@Autowired注解的注入
          */
-        this.beanFactory = new AbstractAutowireCapableBeanFactory();
+        this.beanFactory = new DefaultListableBeanFactory();
 
 
         XmlBeanDefinitionReader beanDefinitionReader = new XmlBeanDefinitionReader(this.beanFactory);
