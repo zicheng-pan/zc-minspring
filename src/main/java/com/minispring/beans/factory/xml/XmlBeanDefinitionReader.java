@@ -1,7 +1,7 @@
 package com.minispring.beans.factory.xml;
 
 import com.minispring.beans.factory.config.BeanDefinition;
-import com.minispring.beans.factory.interfaces.BeanFactory;
+import com.minispring.beans.factory.config.BeanFactory;
 import com.minispring.beans.factory.config.property.ConstructArgumentValue;
 import com.minispring.beans.factory.config.property.ConstructArgumentValues;
 import com.minispring.beans.factory.config.property.PropertyValue;

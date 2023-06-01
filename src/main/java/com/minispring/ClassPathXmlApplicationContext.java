@@ -2,7 +2,7 @@ package com.minispring;
 
 import com.minispring.beans.factory.support.AutowiredAnnotationBeanPostProcessor;
 import com.minispring.beans.factory.support.AbstractAutowireCapableBeanFactory;
-import com.minispring.beans.factory.interfaces.BeanFactory;
+import com.minispring.beans.factory.config.BeanFactory;
 import com.minispring.beans.factory.config.BeanDefinition;
 import com.minispring.beans.factory.xml.XmlBeanDefinitionReader;
 import com.minispring.beans.resource.ClassPathXmlResource;

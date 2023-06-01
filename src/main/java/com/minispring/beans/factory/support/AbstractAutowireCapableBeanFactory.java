@@ -1,6 +1,6 @@
 package com.minispring.beans.factory.support;
 
-import com.minispring.beans.factory.interfaces.BeanPostProcessor;
+import com.minispring.beans.factory.config.BeanPostProcessor;
 import com.minispring.exception.BeansException;
 
 import java.util.ArrayList;

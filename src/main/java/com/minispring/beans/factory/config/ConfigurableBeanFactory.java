@@ -1,7 +1,5 @@
-package com.minispring.beans.factory.interfaces;
+package com.minispring.beans.factory.config;
 
-
-import com.minispring.beans.factory.config.SinglentonBeanRegistry;
 
 /**
  * 维护Bean之间的依赖关系以及支持Bean的postProcessor抽离出一个独立的特性

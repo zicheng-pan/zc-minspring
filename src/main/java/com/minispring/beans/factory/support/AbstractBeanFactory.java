@@ -5,9 +5,9 @@ import com.minispring.beans.factory.config.property.ConstructArgumentValue;
 import com.minispring.beans.factory.config.property.ConstructArgumentValues;
 import com.minispring.beans.factory.config.property.PropertyValue;
 import com.minispring.beans.factory.config.property.PropertyValues;
-import com.minispring.beans.factory.interfaces.AutowireCapableBeanFactory;
-import com.minispring.beans.factory.interfaces.BeanDefinitionRegistry;
-import com.minispring.beans.factory.interfaces.BeanFactory;
+import com.minispring.beans.factory.config.AutowireCapableBeanFactory;
+import com.minispring.beans.factory.config.BeanDefinitionRegistry;
+import com.minispring.beans.factory.config.BeanFactory;
 import com.minispring.exception.BeansException;
 
 import java.lang.reflect.Constructor;
