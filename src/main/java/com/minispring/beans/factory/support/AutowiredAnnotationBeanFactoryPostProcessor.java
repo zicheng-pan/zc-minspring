@@ -1,16 +1,16 @@
 package com.minispring.beans.factory.support;
 
 import com.minispring.beans.factory.annotation.Autowired;
-import com.minispring.beans.factory.config.BeanPostProcessor;
+import com.minispring.beans.factory.config.BeanFactoryPostProcessor;
 import com.minispring.exception.BeansException;
 
 import java.lang.reflect.Field;
 
-public class AutowiredAnnotationBeanPostProcessor implements BeanPostProcessor {
+public class AutowiredAnnotationBeanFactoryPostProcessor implements BeanFactoryPostProcessor {
 
     private AbstractAutowireCapableBeanFactory beanFactory;
 
-    public AutowiredAnnotationBeanPostProcessor(AbstractAutowireCapableBeanFactory beanFactory) {
+    public AutowiredAnnotationBeanFactoryPostProcessor(AbstractAutowireCapableBeanFactory beanFactory) {
         this.beanFactory = beanFactory;
     }
 

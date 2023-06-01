@@ -9,7 +9,7 @@ public interface ConfigurableBeanFactory extends BeanFactory, SinglentonBeanRegi
     String SCOPE_SINGLETON = "singleton";
     String SCOPE_PROTOTYPE = "prototype";
 
-    void addBeanPostProcessor(BeanPostProcessor beanPostProcessor);
+    void addBeanPostProcessor(BeanFactoryPostProcessor beanFactoryPostProcessor);
 
     int getBeanPostProcessorCount();
 

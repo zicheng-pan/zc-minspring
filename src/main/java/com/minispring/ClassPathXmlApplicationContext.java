@@ -1,106 +1,105 @@
 package com.minispring;
 
 import com.minispring.beans.DefaultListableBeanFactory;
-import com.minispring.beans.factory.support.AutowiredAnnotationBeanPostProcessor;
-import com.minispring.beans.factory.support.AbstractAutowireCapableBeanFactory;
-import com.minispring.beans.factory.config.BeanFactory;
 import com.minispring.beans.factory.config.BeanDefinition;
+import com.minispring.beans.factory.config.BeanFactoryPostProcessor;
+import com.minispring.beans.factory.config.ConfigurableListableBeanFactory;
+import com.minispring.beans.factory.support.AutowiredAnnotationBeanFactoryPostProcessor;
 import com.minispring.beans.factory.xml.XmlBeanDefinitionReader;
 import com.minispring.beans.resource.ClassPathXmlResource;
 import com.minispring.beans.resource.Resource;
-import com.minispring.event.ApplicationEvent;
-import com.minispring.event.ApplicationEventPublisher;
+import com.minispring.event.*;
 import com.minispring.exception.BeansException;
 
-public class ClassPathXmlApplicationContext implements BeanFactory, ApplicationEventPublisher {
+import java.util.ArrayList;
+import java.util.List;
 
-    BeanFactory beanFactory;
+public class ClassPathXmlApplicationContext extends AbstractApplicationContext {
+
+
+    DefaultListableBeanFactory beanFactory;
+
+    private final List<BeanFactoryPostProcessor> beanFactoryPostProcessors = new ArrayList<>();
+
+    public ClassPathXmlApplicationContext(String fileName) {
+        this(fileName, true);
+    }
 
     public ClassPathXmlApplicationContext(String fileName, boolean isRefresh) {
         Resource resource = new ClassPathXmlResource(fileName);
-        /*
-            这个是使用xml来构建bean对象
-            this.beanFactory = new SimpleBeanFactory();
-         */
+        DefaultListableBeanFactory beanFactory1 = new DefaultListableBeanFactory();
+        XmlBeanDefinitionReader reader = new XmlBeanDefinitionReader(beanFactory1);
+        reader.loadBeanDefinitions(resource);
+        this.beanFactory = beanFactory1;
 
-        /*
-            这个AutowiredCapableBeanFactory类可以添加自定义processor,并且自定义processor可以实现@Autowired注解的注入
-         */
-        this.beanFactory = new DefaultListableBeanFactory();
-
-
-        XmlBeanDefinitionReader beanDefinitionReader = new XmlBeanDefinitionReader(this.beanFactory);
-        beanDefinitionReader.loadBeanDefinitions(resource);
         if (isRefresh) {
             try {
-                /*
-                    这里refresh方法中添加了自己的AutowiredAnnotationBeanPostProcessor类，用来Autowire注解的解析
-                    然后在注册进去
-                 */
-                this.refresh();
-            } catch (BeansException e) {
+                refresh();
+            } catch (Exception e) {
                 throw new RuntimeException(e);
             }
         }
     }
 
     @Override
-    public Object getBean(String beanName) {
-        try {
-            return this.beanFactory.getBean(beanName);
-        } catch (BeansException e) {
-            throw new RuntimeException(e);
-        }
+    public void registerListeners() {
+        ApplicationListener listener = new ApplicationListener();
+        this.getApplicationEventPublisher().addApplicationListener(listener);
     }
 
     @Override
-    public void registerBeanDefinition(BeanDefinition beanDefinition) {
-        this.beanFactory.registerBeanDefinition(beanDefinition);
+    public void initApplicationEventPublisher() {
+        ApplicationEventPublisher applicationEventPublisher = new SimpleApplicationEventPublisher();
+        this.setApplicationEventPublisher(applicationEventPublisher);
     }
 
     @Override
-    public Boolean containsBean(String beanName) {
-        return this.beanFactory.containsBean(beanName);
+    public void postProcessBeanFactory(ConfigurableListableBeanFactory bf) {
+
     }
 
     @Override
-    public void registerBean(String beanName, Object obj) {
-        this.beanFactory.registerBean(beanName, obj);
+    public void registerBeanPostProcessors(ConfigurableListableBeanFactory bf) {
+        this.beanFactory.addBeanPostProcessor(new AutowiredAnnotationBeanFactoryPostProcessor(this.beanFactory));
     }
 
     @Override
-    public Boolean isSingleton(String beanName) {
-        return false;
-    }
-
-    @Override
-    public Boolean isPrototype(String beanName) {
-        return false;
-    }
-
-    @Override
-    public Class<?> getType(String beanName) {
-        return null;
-    }
-
-    @Override
-    public void refresh() throws BeansException {
-        registerBeanPostProcessors((AbstractAutowireCapableBeanFactory) this.beanFactory);
-        onRefresh();
-    }
-
     public void onRefresh() throws BeansException {
         this.beanFactory.refresh();
     }
 
-    private void registerBeanPostProcessors(AbstractAutowireCapableBeanFactory beanFactory) {
-        beanFactory.addBeanPostProcessor(new AutowiredAnnotationBeanPostProcessor((AbstractAutowireCapableBeanFactory) this.beanFactory));
+    @Override
+    public void finishRefresh() {
+        publishEvent(new ContextRefreshEvent("Context Refreshed..."));
+    }
+
+    @Override
+    public ConfigurableListableBeanFactory getBeanFactory() throws IllegalStateException {
+        return this.beanFactory;
+    }
+
+    @Override
+    public void registerBeanDefinition(BeanDefinition beanDefinition) {
+
+    }
+
+    @Override
+    public void registerBean(String beanName, Object obj) {
+
     }
 
     @Override
     public void publishEvent(ApplicationEvent event) {
-
+        this.getApplicationEventPublisher().publishEvent(event);
     }
 
+    @Override
+    public void addApplicationListener(ApplicationListener listener) {
+        this.getApplicationEventPublisher().addApplicationListener(listener);
+    }
+
+    public void addBeanFactoryPostProcessor(BeanFactoryPostProcessor postProcessor) {
+        this.beanFactoryPostProcessors.add(postProcessor);
+    }
 
 }

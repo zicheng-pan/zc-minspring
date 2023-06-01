@@ -29,7 +29,7 @@ public abstract class AbstractBeanFactory extends DefaultSingletonBeanRegistry i
     @Override
     public Object getBean(String beanName) throws BeansException {
         // Get bean if exists.
-        Object singleton = this.getSinglenton(beanName);
+        Object singleton = this.getSingleton(beanName);
         // If bean doesn't exist init it.
         if (singleton == null) {
             // 如果没有初始化好的对象，那么去earlySingletonObjects这里查找，用来解决循环依赖问题
@@ -178,7 +178,7 @@ public abstract class AbstractBeanFactory extends DefaultSingletonBeanRegistry i
 
     @Override
     public void registerBean(String beanName, Object obj) {
-        this.registerSinglenton(beanName, obj);
+        this.registerSingleton(beanName, obj);
     }
 
     @Override

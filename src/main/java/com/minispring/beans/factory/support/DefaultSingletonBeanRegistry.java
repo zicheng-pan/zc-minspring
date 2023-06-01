@@ -16,7 +16,7 @@ public class DefaultSingletonBeanRegistry implements SinglentonBeanRegistry {
 
     @Override
 
-    public void registerSinglenton(String beanName, Object singletonObject) {
+    public void registerSingleton(String beanName, Object singletonObject) {
         synchronized (this.singletonBeans) {
             this.singletonBeans.put(beanName, singletonObject);
             this.beanNames.add(beanName);
@@ -24,7 +24,7 @@ public class DefaultSingletonBeanRegistry implements SinglentonBeanRegistry {
     }
 
     @Override
-    public Object getSinglenton(String beanName) {
+    public Object getSingleton(String beanName) {
         return this.singletonBeans.getOrDefault(beanName, null);
     }
 
@@ -34,7 +34,7 @@ public class DefaultSingletonBeanRegistry implements SinglentonBeanRegistry {
     }
 
     @Override
-    public String[] getSinglentonNames() {
+    public String[] getSingletonNames() {
         return (String[]) this.beanNames.toArray();
     }
 
