@@ -5,6 +5,9 @@ import com.minispring.exception.BeansException;
 import java.util.Map;
 
 /**
+ * 将 Factory 内部管理的 Bean 作为一个集合来对待，获取 Bean 的数量，得到所有 Bean 的名字，按照某个类型获取 Bean 列表等等
+ *
+ *
  * 在BeanFactory的基础上添加对Beandefinition中的内容的操作
  * 1. 可以获取beanDefinition的个数
  * 2. 获取所有的beanDefinition的名称
