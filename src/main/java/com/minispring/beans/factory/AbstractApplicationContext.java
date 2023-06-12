@@ -1,10 +1,10 @@
-package com.minispring;
+package com.minispring.beans.factory;
 
 import com.minispring.beans.factory.config.BeanFactoryPostProcessor;
 import com.minispring.beans.factory.config.ConfigurableListableBeanFactory;
-import com.minispring.env.Environment;
-import com.minispring.event.ApplicationEventPublisher;
-import com.minispring.exception.BeansException;
+import com.minispring.beans.factory.env.Environment;
+import com.minispring.beans.factory.event.ApplicationEventPublisher;
+import com.minispring.beans.factory.exception.BeansException;
 
 import java.util.ArrayList;
 import java.util.List;

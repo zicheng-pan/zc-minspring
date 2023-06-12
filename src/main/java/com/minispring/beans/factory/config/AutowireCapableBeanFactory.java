@@ -1,6 +1,6 @@
 package com.minispring.beans.factory.config;
 
-import com.minispring.exception.BeansException;
+import com.minispring.beans.factory.exception.BeansException;
 
 public interface AutowireCapableBeanFactory {
     int AUTOWIRE_NO = 0;

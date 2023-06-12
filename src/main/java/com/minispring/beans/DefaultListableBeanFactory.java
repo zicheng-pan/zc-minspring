@@ -3,7 +3,7 @@ package com.minispring.beans;
 import com.minispring.beans.factory.config.BeanDefinition;
 import com.minispring.beans.factory.config.ConfigurableListableBeanFactory;
 import com.minispring.beans.factory.support.AbstractAutowireCapableBeanFactory;
-import com.minispring.exception.BeansException;
+import com.minispring.beans.factory.exception.BeansException;
 
 import java.util.*;
 

@@ -1,4 +1,4 @@
-package com.minispring.env;
+package com.minispring.beans.factory.env;
 
 public interface Environment extends PropertyResolver {
 

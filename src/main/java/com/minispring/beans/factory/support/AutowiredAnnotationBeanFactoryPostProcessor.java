@@ -2,7 +2,7 @@ package com.minispring.beans.factory.support;
 
 import com.minispring.beans.factory.annotation.Autowired;
 import com.minispring.beans.factory.config.BeanFactoryPostProcessor;
-import com.minispring.exception.BeansException;
+import com.minispring.beans.factory.exception.BeansException;
 
 import java.lang.reflect.Field;
 

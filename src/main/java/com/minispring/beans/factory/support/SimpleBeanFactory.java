@@ -7,7 +7,7 @@ import com.minispring.beans.factory.config.property.ConstructArgumentValue;
 import com.minispring.beans.factory.config.property.ConstructArgumentValues;
 import com.minispring.beans.factory.config.property.PropertyValue;
 import com.minispring.beans.factory.config.property.PropertyValues;
-import com.minispring.exception.BeansException;
+import com.minispring.beans.factory.exception.BeansException;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;

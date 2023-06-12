@@ -8,7 +8,7 @@ import com.minispring.beans.factory.config.property.PropertyValues;
 import com.minispring.beans.factory.config.AutowireCapableBeanFactory;
 import com.minispring.beans.factory.config.BeanDefinitionRegistry;
 import com.minispring.beans.factory.config.BeanFactory;
-import com.minispring.exception.BeansException;
+import com.minispring.beans.factory.exception.BeansException;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;

@@ -1,20 +1,20 @@
-package com.minispring;
+package com.minispring.beans.factory;
 
 import com.minispring.beans.DefaultListableBeanFactory;
 import com.minispring.beans.factory.config.BeanDefinition;
 import com.minispring.beans.factory.config.BeanFactoryPostProcessor;
 import com.minispring.beans.factory.config.ConfigurableListableBeanFactory;
+import com.minispring.beans.factory.event.*;
 import com.minispring.beans.factory.support.AutowiredAnnotationBeanFactoryPostProcessor;
 import com.minispring.beans.factory.xml.XmlBeanDefinitionReader;
-import com.minispring.beans.resource.ClassPathXmlResource;
-import com.minispring.beans.resource.Resource;
-import com.minispring.event.*;
-import com.minispring.exception.BeansException;
+import com.minispring.beans.factory.resource.ClassPathXmlResource;
+import com.minispring.beans.factory.resource.Resource;
+import com.minispring.beans.factory.exception.BeansException;
 
 public class ClassPathXmlApplicationContext extends AbstractApplicationContext {
 
 
-    DefaultListableBeanFactory beanFactory;
+    public DefaultListableBeanFactory beanFactory;
 
     public ClassPathXmlApplicationContext(String fileName) {
         this(fileName, true);
