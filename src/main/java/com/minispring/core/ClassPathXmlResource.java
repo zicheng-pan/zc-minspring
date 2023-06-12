@@ -25,6 +25,16 @@ public class ClassPathXmlResource implements Resource {
         }
     }
 
+    public ClassPathXmlResource(URL xmlPath) {
+        SAXReader saxReader = new SAXReader();
+        try {
+            this.document = saxReader.read(xmlPath);
+            this.rootElement = this.document.getRootElement();
+            elementIterator = this.rootElement.elementIterator();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
     @Override
     public boolean hasNext() {
         return this.elementIterator.hasNext();

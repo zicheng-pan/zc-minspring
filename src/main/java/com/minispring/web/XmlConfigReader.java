@@ -1,5 +1,6 @@
 package com.minispring.web;
 
+import com.minispring.core.Resource;
 import org.dom4j.Element;
 
 import java.util.HashMap;

@@ -3,7 +3,7 @@ package com.minispring.context.event;
 import java.util.EventObject;
 
 /*
-    借助于jdk的时间机制，进行Event类型的封装
+    借助于jdk的事件机制，进行Event类型的封装
  */
 public class ApplicationEvent extends EventObject {
 
