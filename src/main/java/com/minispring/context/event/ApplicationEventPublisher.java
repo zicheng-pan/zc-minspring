@@ -1,4 +1,4 @@
-package com.minispring.beans.factory.event;
+package com.minispring.context.event;
 
 public interface ApplicationEventPublisher {
     void publishEvent(ApplicationEvent event);

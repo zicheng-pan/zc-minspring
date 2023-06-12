@@ -1,4 +1,4 @@
-package com.minispring.beans.factory.env;
+package com.minispring.core.env;
 
 public interface EnvironmentCapable {
 

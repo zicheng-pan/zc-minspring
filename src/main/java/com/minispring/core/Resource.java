@@ -1,4 +1,4 @@
-package com.minispring.beans.factory.resource;
+package com.minispring.core;
 
 import java.util.Iterator;
 

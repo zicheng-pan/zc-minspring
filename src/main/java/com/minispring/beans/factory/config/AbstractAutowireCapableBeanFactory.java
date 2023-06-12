@@ -1,7 +1,8 @@
-package com.minispring.beans.factory.support;
+package com.minispring.beans.factory.config;
 
-import com.minispring.beans.factory.config.BeanFactoryPostProcessor;
+import com.minispring.beans.factory.annotation.AutowiredAnnotationBeanFactoryPostProcessor;
 import com.minispring.beans.factory.exception.BeansException;
+import com.minispring.beans.factory.support.AbstractBeanFactory;
 
 import java.util.ArrayList;
 import java.util.List;

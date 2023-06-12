@@ -1,4 +1,4 @@
-package com.minispring.beans.factory.event;
+package com.minispring.context.event;
 
 public class ContextRefreshEvent extends ApplicationEvent {
 

@@ -1,7 +1,7 @@
 package com.minispring;
 
-import com.minispring.beans.DefaultListableBeanFactory;
-import com.minispring.beans.factory.ClassPathXmlApplicationContext;
+import com.minispring.beans.factory.DefaultListableBeanFactory;
+import com.minispring.context.ClassPathXmlApplicationContext;
 import com.minispring.testbean.*;
 import org.junit.Assert;
 import org.junit.Test;

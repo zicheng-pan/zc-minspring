@@ -6,7 +6,7 @@ import com.minispring.beans.factory.config.property.ConstructArgumentValue;
 import com.minispring.beans.factory.config.property.ConstructArgumentValues;
 import com.minispring.beans.factory.config.property.PropertyValue;
 import com.minispring.beans.factory.config.property.PropertyValues;
-import com.minispring.beans.factory.resource.Resource;
+import com.minispring.core.Resource;
 import org.dom4j.Element;
 
 import java.util.ArrayList;

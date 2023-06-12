@@ -1,8 +1,8 @@
-package com.minispring.beans;
+package com.minispring.beans.factory;
 
+import com.minispring.beans.factory.config.AbstractAutowireCapableBeanFactory;
 import com.minispring.beans.factory.config.BeanDefinition;
 import com.minispring.beans.factory.config.ConfigurableListableBeanFactory;
-import com.minispring.beans.factory.support.AbstractAutowireCapableBeanFactory;
 import com.minispring.beans.factory.exception.BeansException;
 
 import java.util.*;

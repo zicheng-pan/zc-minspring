@@ -1,12 +1,12 @@
-package com.minispring.beans.factory;
+package com.minispring.context;
 
 import com.minispring.beans.factory.config.BeanFactoryPostProcessor;
 import com.minispring.beans.factory.config.ConfigurableBeanFactory;
 import com.minispring.beans.factory.config.ConfigurableListableBeanFactory;
 import com.minispring.beans.factory.config.ListableBeanFactory;
-import com.minispring.beans.factory.env.Environment;
-import com.minispring.beans.factory.env.EnvironmentCapable;
-import com.minispring.beans.factory.event.ApplicationEventPublisher;
+import com.minispring.core.env.Environment;
+import com.minispring.core.env.EnvironmentCapable;
+import com.minispring.context.event.ApplicationEventPublisher;
 import com.minispring.beans.factory.exception.BeansException;
 
 /**

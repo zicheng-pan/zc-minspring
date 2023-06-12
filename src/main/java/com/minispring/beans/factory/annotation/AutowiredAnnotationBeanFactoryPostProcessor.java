@@ -1,6 +1,6 @@
-package com.minispring.beans.factory.support;
+package com.minispring.beans.factory.annotation;
 
-import com.minispring.beans.factory.annotation.Autowired;
+import com.minispring.beans.factory.config.AbstractAutowireCapableBeanFactory;
 import com.minispring.beans.factory.config.BeanFactoryPostProcessor;
 import com.minispring.beans.factory.exception.BeansException;
 
