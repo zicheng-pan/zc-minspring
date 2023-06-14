@@ -13,7 +13,7 @@ public class Main {
     public static void main(String[] args) throws LifecycleException {
         // 启动 tomcat
         Tomcat tomcat = new Tomcat();
-        tomcat.setPort(Integer.getInteger("port", 8888));
+        tomcat.setPort(Integer.getInteger("port", 8080));
         tomcat.getConnector();
         // 创建 WebApp
         Context context = tomcat.addWebapp("", new File("src/main/webapp").getAbsolutePath());

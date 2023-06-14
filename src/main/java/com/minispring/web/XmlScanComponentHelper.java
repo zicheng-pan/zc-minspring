@@ -15,7 +15,7 @@ public class XmlScanComponentHelper {
         SAXReader saxReader = new SAXReader();
         Document document = null;
         try {
-            document = saxReader.read(xmlPath); //加载配置文件 } catch (DocumentException e) {
+            document = saxReader.read(xmlPath);
         } catch (Exception e) {
             e.printStackTrace();
         }
