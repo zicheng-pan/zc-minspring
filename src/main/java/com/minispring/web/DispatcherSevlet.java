@@ -144,6 +144,10 @@ public class DispatcherSevlet extends HttpServlet {
     }
 
 
+    /**
+     * TODO 将加载class，定义BeanDefinition的步骤抽离出来
+     * TODO 将initController分成两个阶段来做，可以避免Controller互相引用出错的问题
+     */
     private void initController() {
         this.controllerNames = scanPackages(this.packageNames);
         for (String controllerName : this.controllerNames) {
