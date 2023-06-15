@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.net.MalformedURLException;
 import java.net.URI;
@@ -42,8 +43,12 @@ public class DispatcherSevlet extends HttpServlet {
     // controller名称与类的映射关系
     private Map<String, Class<?>> controllerClasses = new HashMap<>();
 
+    WebApplicationContext webApplicationContext;
+
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
+        this.webApplicationContext = (WebApplicationContext)
+                this.getServletContext().getAttribute(WebApplicationContext.ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE);
         sContextConfigLocation = config.getInitParameter("contextConfigLocation");
         URL xmlPath = null;
         try {
@@ -152,6 +157,17 @@ public class DispatcherSevlet extends HttpServlet {
             try {
                 obj = clz.newInstance(); //实例化bean
                 this.controllerObjs.put(controllerName, obj);
+                /**
+                 * 初始化controller中的属性，set Bean
+                 */
+                Field[] declaredFields = clz.getDeclaredFields();
+                for (Field field : declaredFields) {
+                    if (field.isAnnotationPresent(Bean.class)) {
+                        field.setAccessible(true);
+                        Object bean = this.webApplicationContext.getBean(field.getName());
+                        field.set(obj, bean);
+                    }
+                }
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }

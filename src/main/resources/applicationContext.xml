@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans>
+    <bean id="aservice" class="com.minispring.web.test.service.AServiceImpl">
+    </bean>
+    <bean id="baseservice" class="com.minispring.web.test.service.BaseService">
+    </bean>
+</beans>

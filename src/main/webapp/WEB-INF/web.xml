@@ -1,11 +1,44 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:web="http://xmlns.jcp.org/xml/ns/javaee" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" id="WebApp_ID">
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:web="http://xmlns.jcp.org/xml/ns/javaee"
+         xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+         id="WebApp_ID">
+
+    <!--    <display-name></display-name>-->
+    <!--    声明WEB应用的名字-->
+    <!--    <description></description>-->
+    <!--    声明WEB应用的描述信息-->
+    <!--    <context-param></context-param>-->
+    <!--    声明应用全局的初始化参数。-->
+    <!--    <listener></listener>-->
+    <!--    声明监听器，它在建立、修改和删除会话或servlet环境时得到事件通知。-->
+    <!--    <filter></filter>-->
+    <!--    声明一个实现javax.servlet.Filter接口的类。-->
+    <!--    <filter-mapping></filter-mapping>-->
+    <!--    声明过滤器的拦截路径。-->
+    <!--    <servlet></servlet>-->
+    <!--    声明servlet类。-->
+    <!--    <servlet-mapping></servlet-mapping>-->
+    <!--    声明servlet的访问路径，试一个方便访问的URL。-->
+    <!--    <session-config></session-config>-->
+    <!--    session有关的配置，超时值。-->
+    <!--    <error-page></error-page>-->
+    <!--    在返回特定HTTP状态代码时，或者特定类型的异常被抛出时，能够制定将要显示的页面。-->
+
+    <context-param>
+        <param-name>contextConfigLocation</param-name>
+        <param-value>applicationContext.xml</param-value>
+    </context-param>
+    <listener>
+        <listener-class>
+            com.minispring.web.ContextLoaderListener
+        </listener-class>
+    </listener>
     <servlet>
         <servlet-name>minisMVC</servlet-name>
         <servlet-class>com.minispring.web.DispatcherSevlet</servlet-class>
         <init-param>
             <param-name>contextConfigLocation</param-name>
-            <param-value> /WEB-INF/minisMVC-Component-servlet.xml </param-value>
+            <param-value>/WEB-INF/minisMVC-Component-servlet.xml</param-value>
         </init-param>
         <load-on-startup>1</load-on-startup>
     </servlet>
