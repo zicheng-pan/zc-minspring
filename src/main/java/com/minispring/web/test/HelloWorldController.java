@@ -1,12 +1,12 @@
 package com.minispring.web.test;
 
-import com.minispring.web.Bean;
+import com.minispring.beans.factory.annotation.Autowired;
 import com.minispring.web.RequestMapping;
 import com.minispring.web.test.service.AServiceImpl;
 
 public class HelloWorldController {
 
-    @Bean
+    @Autowired
     AServiceImpl aservice;
 
     @RequestMapping("/helloworld")

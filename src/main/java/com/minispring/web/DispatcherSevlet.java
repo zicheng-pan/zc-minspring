@@ -1,5 +1,7 @@
 package com.minispring.web;
 
+import com.minispring.beans.factory.annotation.Autowired;
+
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -162,7 +164,7 @@ public class DispatcherSevlet extends HttpServlet {
                  */
                 Field[] declaredFields = clz.getDeclaredFields();
                 for (Field field : declaredFields) {
-                    if (field.isAnnotationPresent(Bean.class)) {
+                    if (field.isAnnotationPresent(Autowired.class)) {
                         field.setAccessible(true);
                         Object bean = this.webApplicationContext.getBean(field.getName());
                         field.set(obj, bean);
