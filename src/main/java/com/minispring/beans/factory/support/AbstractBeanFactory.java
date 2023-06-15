@@ -27,18 +27,19 @@ public abstract class AbstractBeanFactory extends DefaultSingletonBeanRegistry i
 
     /**
      * 问题一：这里创建单例对象，可以看到如果不使用单例对象，可以修改这里
-     *
+     * <p>
      * 问题二：单例模式管理所有的 bean，那么怎么应对多线程环境?
-     *  1. 定义singletons为线程同步的concurrentHashMap
-     *  2. registerSingleton方法前面加上synchronized关键字
-     *  这一切都是为了确保在多线程并发的情况下，我们 仍然能安全地实现对单例 Bean 的管理。
-     *  无论是单线程还是多线程，我们整个系统里面这个 Bean 总是唯一的、单例的。
-     *
+     * 1. 定义singletons为线程同步的concurrentHashMap
+     * 2. registerSingleton方法前面加上synchronized关键字
+     * 这一切都是为了确保在多线程并发的情况下，我们 仍然能安全地实现对单例 Bean 的管理。
+     * 无论是单线程还是多线程，我们整个系统里面这个 Bean 总是唯一的、单例的。
+     * <p>
      * 问题三：单例模式下，容器管理所有的Bean时，多线程环境下可能存在线程安全问题，如何避免
-     *  1. 避免数据共享
-     *  2. 使用线程安全的数据结构
-     *  3. 进行同步操作
-     *  4. ThreadLocal
+     * 1. 避免数据共享
+     * 2. 使用线程安全的数据结构
+     * 3. 进行同步操作
+     * 4. ThreadLocal
+     *
      * @param beanName
      * @return
      * @throws BeansException
@@ -106,7 +107,7 @@ public abstract class AbstractBeanFactory extends DefaultSingletonBeanRegistry i
         clz = Class.forName(beanDefinition.getClassName());
         ConstructArgumentValues constructorConstructArgumentValues = beanDefinition.getConstructorArgumentValues();
         // 如果xml配置文件中对这个beans，配置了构造参数
-        if (!constructorConstructArgumentValues.isEmpty()) {
+        if (constructorConstructArgumentValues != null && !constructorConstructArgumentValues.isEmpty()) {
             Class<?>[] paramTypes = new Class[constructorConstructArgumentValues.getArgumentCount()];
             List<Object> paramValues = new ArrayList<>();
 
@@ -143,7 +144,7 @@ public abstract class AbstractBeanFactory extends DefaultSingletonBeanRegistry i
         Class clz = Class.forName(beanDefinition.getClassName());
         // 有了对象后，根据xml文件的Property配置，创建对象属性
         PropertyValues propertyValues = beanDefinition.getPropertyValues();
-        if (!propertyValues.isEmpty()) {
+        if (propertyValues != null && !propertyValues.isEmpty()) {
             for (int i = 0; i < propertyValues.size(); i++) {
 
                 Object[] paramValues = new Object[1];

@@ -75,7 +75,7 @@ public class ClassPathXmlApplicationContext extends AbstractApplicationContext {
 
     @Override
     public void registerBeanDefinition(BeanDefinition beanDefinition) {
-
+        this.beanFactory.registerBeanDefinition(beanDefinition);
     }
 
     @Override

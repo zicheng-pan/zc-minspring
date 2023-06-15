@@ -1,6 +1,6 @@
 package com.minispring.web;
 
-import com.minispring.beans.factory.annotation.Autowired;
+import com.minispring.beans.factory.config.BeanDefinition;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -9,7 +9,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.net.MalformedURLException;
 import java.net.URI;
@@ -148,28 +147,39 @@ public class DispatcherSevlet extends HttpServlet {
     private void initController() {
         this.controllerNames = scanPackages(this.packageNames);
         for (String controllerName : this.controllerNames) {
-            Object obj = null;
-            Class<?> clz = null;
+            /**
+             * 直接通过配置来创建Bean，修改为和BeanFacotry结合创建bean
+             */
+//            Object obj = null;
+//            Class<?> clz = null;
+//            try {
+//                clz = Class.forName(controllerName); //加载类
+//                this.controllerClasses.put(controllerName, clz);
+//            } catch (Exception e) {
+//                throw new RuntimeException(e);
+//            }
+//            try {
+//                obj = clz.newInstance(); //实例化bean
+//                this.controllerObjs.put(controllerName, obj);
+//                /**
+//                 * 初始化controller中的属性，set Bean
+//                 */
+//                Field[] declaredFields = clz.getDeclaredFields();
+//                for (Field field : declaredFields) {
+//                    if (field.isAnnotationPresent(Autowired.class)) {
+//                        field.setAccessible(true);
+//                        Object bean = this.webApplicationContext.getBean(field.getName());
+//                        field.set(obj, bean);
+//                    }
+//                }
+//            } catch (Exception e) {
+//                throw new RuntimeException(e);
+//            }
+
+            this.webApplicationContext.registerBeanDefinition(new BeanDefinition(controllerName, controllerName));
             try {
-                clz = Class.forName(controllerName); //加载类
-                this.controllerClasses.put(controllerName, clz);
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
-            try {
-                obj = clz.newInstance(); //实例化bean
-                this.controllerObjs.put(controllerName, obj);
-                /**
-                 * 初始化controller中的属性，set Bean
-                 */
-                Field[] declaredFields = clz.getDeclaredFields();
-                for (Field field : declaredFields) {
-                    if (field.isAnnotationPresent(Autowired.class)) {
-                        field.setAccessible(true);
-                        Object bean = this.webApplicationContext.getBean(field.getName());
-                        field.set(obj, bean);
-                    }
-                }
+                this.controllerObjs.put(controllerName, this.webApplicationContext.getBean(controllerName));
+                this.controllerClasses.put(controllerName, Class.forName(controllerName));
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
