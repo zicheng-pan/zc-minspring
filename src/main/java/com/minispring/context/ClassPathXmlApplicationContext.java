@@ -49,9 +49,7 @@ public class ClassPathXmlApplicationContext extends AbstractApplicationContext {
     }
 
     @Override
-    public void postProcessBeanFactory(ConfigurableListableBeanFactory bf) {
-
-    }
+    public void postProcessBeanFactory(ConfigurableListableBeanFactory bf) {}
 
     @Override
     public void registerBeanPostProcessors(ConfigurableListableBeanFactory bf) {
@@ -71,16 +69,6 @@ public class ClassPathXmlApplicationContext extends AbstractApplicationContext {
     @Override
     public ConfigurableListableBeanFactory getBeanFactory() throws IllegalStateException {
         return this.beanFactory;
-    }
-
-    @Override
-    public void registerBeanDefinition(BeanDefinition beanDefinition) {
-        this.beanFactory.registerBeanDefinition(beanDefinition);
-    }
-
-    @Override
-    public void registerBean(String beanName, Object obj) {
-
     }
 
     @Override

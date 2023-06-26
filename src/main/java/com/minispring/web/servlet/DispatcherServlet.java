@@ -1,24 +1,23 @@
-package com.minispring.web;
+package com.minispring.web.servlet;
 
 import com.minispring.beans.factory.config.BeanDefinition;
+import com.minispring.web.*;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Method;
-import java.net.MalformedURLException;
-import java.net.URI;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class DispatcherSevlet extends HttpServlet {
+public class DispatcherServlet extends HttpServlet {
+
+    public static final String WEB_APPLICATION_CONTEXT_ATTRIBUTE = DispatcherServlet.class.getName() + ".CONTEXT";
     String sContextConfigLocation;
 
     private Map<String, MappingValue> mappingValues;
@@ -44,22 +43,34 @@ public class DispatcherSevlet extends HttpServlet {
     // controller名称与类的映射关系
     private Map<String, Class<?>> controllerClasses = new HashMap<>();
 
-    WebApplicationContext webApplicationContext;
+    private WebApplicationContext webApplicationContext;
+
+    /**
+     * 把Listener启动的上下文和DispatcherServlet启动的上下文两者区分开
+     * 按照时序关系，Listener启动在前，对应的上下文我们叫parentApplicationContext
+     */
+    private WebApplicationContext parentApplicationContext;
 
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
-        this.webApplicationContext = (WebApplicationContext)
+
+        this.parentApplicationContext = (WebApplicationContext)
                 this.getServletContext().getAttribute(WebApplicationContext.ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE);
         sContextConfigLocation = config.getInitParameter("contextConfigLocation");
-        URL xmlPath = null;
-        try {
-            xmlPath = this.getServletContext().getResource(sContextConfigLocation);
+//        URL xmlPath = null;
+//        try {
+//            xmlPath = this.getServletContext().getResource(sContextConfigLocation);
+//
+//            this.packageNames = XmlScanComponentHelper.getNodeValue(xmlPath);
+//
+//        } catch (MalformedURLException e) {
+//            e.printStackTrace();
+//        }
 
-            this.packageNames = XmlScanComponentHelper.getNodeValue(xmlPath);
+        this.webApplicationContext = new
+                AnnotationConfigWebApplicationContext(sContextConfigLocation,
+                this.parentApplicationContext);
 
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        }
 
         /**
          * 使用在自定义servlet.xml配置beans来做解析的方式
@@ -88,9 +99,23 @@ public class DispatcherSevlet extends HttpServlet {
 //            mappingClz.put(id, clz);
 //            mappingObjs.put(id, obj);
 //        }
-        initController();
-        initMapping();
+        initHandlerMappings(this.webApplicationContext);
+        initHandlerAdapters(this.webApplicationContext);
     }
+
+
+    private RequestMappingHandlerMapping handlerMapping;
+
+    protected void initHandlerMappings(WebApplicationContext wac) {
+        this.handlerMapping = new RequestMappingHandlerMapping(wac);
+    }
+
+    private RequestMappingHandlerAdapter handlerAdapter;
+
+    protected void initHandlerAdapters(WebApplicationContext wac) {
+        this.handlerAdapter = new RequestMappingHandlerAdapter(wac);
+    }
+
 
     private void initMapping() {
         this.mappingValues = new HashMap<>();
@@ -112,44 +137,13 @@ public class DispatcherSevlet extends HttpServlet {
         }
     }
 
-    private List<String> scanPackages(List<String> packageNames) {
-        List<String> controllerNames = new ArrayList<>();
-        for (String packageName : packageNames) {
-            controllerNames.addAll(this.scanPackage(packageName));
-        }
-        return controllerNames;
-    }
-
-    private List<String> scanPackage(String packageName) {
-        List<String> tempControllerNames = new ArrayList<>();
-        URI uri = null;
-        //将以.分隔的包名换成以/分隔的uri
-        try {
-            uri = this.getClass().getResource("/" +
-                    packageName.replaceAll("\\.", "/")).toURI();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-        File dir = new File(uri); //处理对应的文件目录
-        for (File file : dir.listFiles()) { //目录下的文件或者子目录 if(file.isDirectory()){ //对子目录递归扫描
-            if (file.isDirectory()) { //对子目录递归扫描
-                scanPackage(packageName + "." + file.getName());
-            } else { //类文件
-                String controllerName = packageName + "."
-                        + file.getName().replace(".class", "");
-                tempControllerNames.add(controllerName);
-            }
-        }
-        return tempControllerNames;
-    }
-
 
     /**
      * TODO 将加载class，定义BeanDefinition的步骤抽离出来
      * TODO 将initController分成两个阶段来做，可以避免Controller互相引用出错的问题
      */
     private void initController() {
-        this.controllerNames = scanPackages(this.packageNames);
+//        this.controllerNames = scanPackages(this.packageNames);
         for (String controllerName : this.controllerNames) {
             /**
              * 直接通过配置来创建Bean，修改为和BeanFacotry结合创建bean
@@ -180,57 +174,81 @@ public class DispatcherSevlet extends HttpServlet {
 //                throw new RuntimeException(e);
 //            }
 
-            this.webApplicationContext.registerBeanDefinition(new BeanDefinition(controllerName, controllerName));
-            try {
-                this.controllerObjs.put(controllerName, this.webApplicationContext.getBean(controllerName));
-                this.controllerClasses.put(controllerName, Class.forName(controllerName));
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
+//            this.webApplicationContext.registerBeanDefinition(new BeanDefinition(controllerName, controllerName));
+//            try {
+//                this.controllerObjs.put(controllerName, this.webApplicationContext.getBean(controllerName));
+//                this.controllerClasses.put(controllerName, Class.forName(controllerName));
+//            } catch (Exception e) {
+//                throw new RuntimeException(e);
+//            }
         }
     }
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
-        Object result = null;
-
-        String sPath = req.getServletPath(); //获取请求的path
-        MappingValue mappingValue = this.mappingValues.getOrDefault(sPath, null);
-        if (mappingValue == null) {
-            throw new ServletException("cannot find url handler:" + sPath);
-        }
-        String method = mappingValue.getMethod();
-        Class<?> clazz = mappingClz.get(sPath);
-        Object obj = mappingObjs.get(sPath);
+    protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        request.setAttribute(WEB_APPLICATION_CONTEXT_ATTRIBUTE,
+                this.webApplicationContext);
         try {
-            Method declaredMethod = clazz.getDeclaredMethod(method);
-            result = declaredMethod.invoke(obj);
+            doDispatch(request, response);
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
+        } finally {
         }
-        resp.getWriter().append(result.toString());
     }
 
-    @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
-        Object result = null;
-
-        String sPath = req.getServletPath(); //获取请求的path
-        MappingValue mappingValue = this.mappingValues.getOrDefault(sPath, null);
-        if (mappingValue == null) {
-            throw new ServletException("cannot find url handler:" + sPath);
+    protected void doDispatch(HttpServletRequest request, HttpServletResponse
+            response) throws Exception {
+        HttpServletRequest processedRequest = request;
+        HandlerMethod handlerMethod = null;
+        handlerMethod = this.handlerMapping.getHandler(processedRequest);
+        if (handlerMethod == null) {
+            return;
         }
-        String method = mappingValue.getMethod();
-        Class<?> clazz = mappingClz.get(sPath);
-        Object obj = mappingObjs.get(sPath);
-        try {
-            Method declaredMethod = clazz.getDeclaredMethod(method);
-            result = declaredMethod.invoke(obj);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-        resp.getWriter().append(result.toString());
+        HandlerAdapter ha = this.handlerAdapter;
+        ha.handle(processedRequest, response, handlerMethod);
     }
+//
+//    @Override
+//    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+//
+//        Object result = null;
+//
+//        String sPath = req.getServletPath(); //获取请求的path
+//        MappingValue mappingValue = this.mappingValues.getOrDefault(sPath, null);
+//        if (mappingValue == null) {
+//            throw new ServletException("cannot find url handler:" + sPath);
+//        }
+//        String method = mappingValue.getMethod();
+//        Class<?> clazz = mappingClz.get(sPath);
+//        Object obj = mappingObjs.get(sPath);
+//        try {
+//            Method declaredMethod = clazz.getDeclaredMethod(method);
+//            result = declaredMethod.invoke(obj);
+//        } catch (Exception e) {
+//            throw new RuntimeException(e);
+//        }
+//        resp.getWriter().append(result.toString());
+//    }
+//
+//    @Override
+//    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+//
+//        Object result = null;
+//
+//        String sPath = req.getServletPath(); //获取请求的path
+//        MappingValue mappingValue = this.mappingValues.getOrDefault(sPath, null);
+//        if (mappingValue == null) {
+//            throw new ServletException("cannot find url handler:" + sPath);
+//        }
+//        String method = mappingValue.getMethod();
+//        Class<?> clazz = mappingClz.get(sPath);
+//        Object obj = mappingObjs.get(sPath);
+//        try {
+//            Method declaredMethod = clazz.getDeclaredMethod(method);
+//            result = declaredMethod.invoke(obj);
+//        } catch (Exception e) {
+//            throw new RuntimeException(e);
+//        }
+//        resp.getWriter().append(result.toString());
+//    }
 }

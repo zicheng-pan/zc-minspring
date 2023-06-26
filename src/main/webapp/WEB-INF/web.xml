@@ -35,7 +35,7 @@
     </listener>
     <servlet>
         <servlet-name>minisMVC</servlet-name>
-        <servlet-class>com.minispring.web.DispatcherSevlet</servlet-class>
+        <servlet-class>com.minispring.web.servlet.DispatcherServlet</servlet-class>
         <init-param>
             <param-name>contextConfigLocation</param-name>
             <param-value>/WEB-INF/minisMVC-Component-servlet.xml</param-value>

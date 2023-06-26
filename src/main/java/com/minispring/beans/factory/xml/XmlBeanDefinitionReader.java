@@ -6,6 +6,8 @@ import com.minispring.beans.factory.config.property.ConstructArgumentValue;
 import com.minispring.beans.factory.config.property.ConstructArgumentValues;
 import com.minispring.beans.factory.config.property.PropertyValue;
 import com.minispring.beans.factory.config.property.PropertyValues;
+import com.minispring.beans.factory.support.AbstractBeanFactory;
+import com.minispring.beans.factory.support.SimpleBeanFactory;
 import com.minispring.core.Resource;
 import org.dom4j.Element;
 
@@ -15,9 +17,9 @@ import java.util.List;
 
 public class XmlBeanDefinitionReader {
 
-    private final BeanFactory beanFactory;
+    private final AbstractBeanFactory beanFactory;
 
-    public XmlBeanDefinitionReader(BeanFactory beanFactory) {
+    public XmlBeanDefinitionReader(AbstractBeanFactory beanFactory) {
         this.beanFactory = beanFactory;
     }
 
@@ -69,7 +71,7 @@ public class XmlBeanDefinitionReader {
             }
             beanDefinition.setConstructorArgumentValues(constructArgumentValues);
 
-            this.beanFactory.registerBeanDefinition(beanDefinition);
+            this.beanFactory.registerBeanDefinition(beanDefinition.getId(), beanDefinition);
         }
     }
 }

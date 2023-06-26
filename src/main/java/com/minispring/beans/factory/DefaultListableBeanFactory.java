@@ -2,6 +2,7 @@ package com.minispring.beans.factory;
 
 import com.minispring.beans.factory.config.AbstractAutowireCapableBeanFactory;
 import com.minispring.beans.factory.config.BeanDefinition;
+import com.minispring.beans.factory.config.BeanFactory;
 import com.minispring.beans.factory.config.ConfigurableListableBeanFactory;
 import com.minispring.beans.factory.exception.BeansException;
 
@@ -9,6 +10,8 @@ import java.util.*;
 
 // TODO need to test
 public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFactory implements ConfigurableListableBeanFactory {
+
+    ConfigurableListableBeanFactory parentBeanFctory;
 
     @Override
     public void registerDependentBean(String beanName, String dependentBeanName) {
@@ -56,7 +59,9 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 
     @Override
     public String[] getBeanDefinitionNames() {
-        return (String[]) this.beanDefinitionNames.toArray();
+        String[] result = new String[beanDefinitionNames.size()];
+        beanDefinitionNames.toArray(result);
+        return result;
     }
 
 
@@ -86,6 +91,24 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
         for (String beanName : beanNames) {
             Object instance = this.getBean(beanName);
             result.put(beanName, (T) instance);
+        }
+        return result;
+    }
+
+    public void setParent(ConfigurableListableBeanFactory beanFactory) {
+        this.parentBeanFctory = beanFactory;
+    }
+
+    @Override
+    public Object getBean(String beanName) throws BeansException {
+        Object result = null;
+        try {
+            result = super.getBean(beanName);
+            if (result == null) {
+                result = this.parentBeanFctory.getBean(beanName);
+            }
+        } catch (BeansException beansException) {
+            result = this.parentBeanFctory.getBean(beanName);
         }
         return result;
     }

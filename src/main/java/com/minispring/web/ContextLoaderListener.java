@@ -24,7 +24,7 @@ public class ContextLoaderListener implements ServletContextListener {
          * 这里需要指定applicationContext.xml文件的路径，通过Servlet的配置传递给ClassPathXmlApplicationContext
          */
         String sContextLocation = servletContext.getInitParameter(CONFIG_LOCATION_PARAM);
-        WebApplicationContext webApplicationContext = new AnnotationConfigWebApplicationContext(sContextLocation);
+        WebApplicationContext webApplicationContext = new XmlWebApplicationContext(sContextLocation);
         webApplicationContext.setServletContext(servletContext);
         this.context = webApplicationContext;
         servletContext.setAttribute(WebApplicationContext.ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE, this.context);

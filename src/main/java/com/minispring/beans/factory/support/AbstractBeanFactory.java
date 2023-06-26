@@ -182,19 +182,12 @@ public abstract class AbstractBeanFactory extends DefaultSingletonBeanRegistry i
         }
     }
 
-    @Override
-    public void registerBeanDefinition(BeanDefinition beanDefinition) {
-        this.beanNames.add(beanDefinition.getId());
-        this.beanDefinitionMap.put(beanDefinition.getId(), beanDefinition);
-        this.beanDefinitionNames.add(beanDefinition.getId());
-    }
 
     @Override
     public Boolean containsBean(String beanName) {
         return this.containsSingleton(beanName);
     }
 
-    @Override
     public void registerBean(String beanName, Object obj) {
         this.registerSingleton(beanName, obj);
     }
@@ -223,14 +216,14 @@ public abstract class AbstractBeanFactory extends DefaultSingletonBeanRegistry i
         /**
          * lazy-init bean
          */
-
-        if (!beanDefinition.isLazyInit()) {
-            try {
-                getBean(name);
-            } catch (BeansException e) {
-                throw new RuntimeException(e);
-            }
-        }
+//
+//        if (!beanDefinition.isLazyInit()) {
+//            try {
+//                getBean(name);
+//            } catch (BeansException e) {
+//                throw new RuntimeException(e);
+//            }
+//        }
 
     }
 
