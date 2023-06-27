@@ -214,7 +214,7 @@ public abstract class AbstractBeanFactory extends DefaultSingletonBeanRegistry i
         this.beanDefinitionMap.put(name, beanDefinition);
         this.beanDefinitionNames.add(name);
         /**
-         * lazy-init bean
+         * lazy-init bean 对于循环依赖会报错
          */
 //
 //        if (!beanDefinition.isLazyInit()) {

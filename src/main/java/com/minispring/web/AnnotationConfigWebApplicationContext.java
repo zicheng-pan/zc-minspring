@@ -36,7 +36,6 @@ public class AnnotationConfigWebApplicationContext extends AbstractApplicationCo
     public AnnotationConfigWebApplicationContext(String fileName, WebApplicationContext parentApplicationContext) {
         this.parentApplicationContext = parentApplicationContext;
         this.servletContext = this.parentApplicationContext.getServletContext();
-        this.servletContext = this.parentApplicationContext.getServletContext();
         URL xmlPath = null;
         try {
             xmlPath = this.getServletContext().getResource(fileName);

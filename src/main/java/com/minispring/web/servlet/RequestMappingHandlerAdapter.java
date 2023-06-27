@@ -18,6 +18,13 @@ public class RequestMappingHandlerAdapter implements HandlerAdapter{
             throws Exception {
         handleInternal(request, response, (HandlerMethod) handler);
     }
+
+    /**
+     * TODO 这里处理request参数
+     * @param request
+     * @param response
+     * @param handler
+     */
     private void handleInternal(HttpServletRequest request, HttpServletResponse response,
                                 HandlerMethod handler) {
         Method method = handler.getMethod();

@@ -21,6 +21,11 @@ public abstract class AbstractApplicationContext implements ApplicationContext {
     private ApplicationEventPublisher applicationEventPublisher;
 
 
+    /**
+     * 这里实现了，使用接口自动注入ApplicationContext对象
+     * @param beanName
+     * @return
+     */
     @Override
     public Object getBean(String beanName) {
         Object returnObj = null;
