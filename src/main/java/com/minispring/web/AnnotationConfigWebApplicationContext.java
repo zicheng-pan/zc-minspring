@@ -101,36 +101,47 @@ public class AnnotationConfigWebApplicationContext extends AbstractApplicationCo
         this.parentApplicationContext = parentApplicationContext;
         this.beanFactory.setParent(this.parentApplicationContext.getBeanFactory());
     }
+
     public ServletContext getServletContext() {
         return this.servletContext;
     }
+
     public void setServletContext(ServletContext servletContext) {
         this.servletContext = servletContext;
     }
+
     public void publishEvent(ApplicationEvent event) {
         this.getApplicationEventPublisher().publishEvent(event);
     }
+
     public void addApplicationListener(ApplicationListener listener) {
         this.getApplicationEventPublisher().addApplicationListener(listener);
     }
+
     public void registerListeners() {
         ApplicationListener listener = new ApplicationListener();
         this.getApplicationEventPublisher().addApplicationListener(listener);
     }
+
     public void initApplicationEventPublisher() {
         ApplicationEventPublisher aep = new SimpleApplicationEventPublisher();
         this.setApplicationEventPublisher(aep);
     }
+
     public void postProcessBeanFactory(ConfigurableListableBeanFactory bf) {
     }
+
     public void registerBeanPostProcessors(ConfigurableListableBeanFactory bf) {
         this.beanFactory.addBeanPostProcessor(new AutowiredAnnotationBeanFactoryPostProcessor(this.beanFactory));
     }
+
     public void onRefresh() throws BeansException {
         this.beanFactory.refresh();
     }
+
     public void finishRefresh() {
     }
+
     public ConfigurableListableBeanFactory getBeanFactory() throws IllegalStateException {
         return this.beanFactory;
     }

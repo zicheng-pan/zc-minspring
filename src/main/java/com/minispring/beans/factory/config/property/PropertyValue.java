@@ -9,6 +9,9 @@ public class PropertyValue {
 
     private final boolean isRef;
 
+    public PropertyValue(String name, Object value) {
+        this( name, value,"", false);
+    }
     public PropertyValue(String name, Object value, String type, boolean isRef) {
         this.value = value;
         this.name = name;

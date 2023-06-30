@@ -3,6 +3,7 @@ package com.minispring.web.test;
 import com.minispring.beans.factory.annotation.Autowired;
 import com.minispring.web.RequestMapping;
 import com.minispring.web.RequestMethod;
+import com.minispring.web.test.bean.Person;
 import com.minispring.web.test.service.AServiceImpl;
 
 public class HelloWorldController {
@@ -25,5 +26,12 @@ public class HelloWorldController {
     public String doGet() {
         aservice.sayHello();
         return "hello,world! get";
+    }
+
+
+    @RequestMapping(value = "/helloworld4", method = RequestMethod.GET)
+    public String doDataBind(Person person) {
+
+        return person.getName() + ":" + person.getAge();
     }
 }

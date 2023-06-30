@@ -82,7 +82,6 @@ public class DispatcherServlet extends HttpServlet {
         if (handlerMethod == null) {
             return;
         }
-        HandlerAdapter ha = this.handlerAdapter;
-        ha.handle(processedRequest, response, handlerMethod);
+        this.handlerAdapter.handle(processedRequest, response, handlerMethod);
     }
 }
